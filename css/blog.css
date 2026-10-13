@@ -835,6 +835,10 @@
 }
 
 .reading__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
     font-size: 1.15rem;
     color: var(--brand-earth);
     transition: transform var(--dur) var(--ease-out);
