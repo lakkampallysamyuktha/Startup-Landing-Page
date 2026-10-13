@@ -19,7 +19,43 @@
     <script>document.documentElement.classList.add('has-js');</script>
 </head>
 
-<body> 
+<body>
+
+    <!-- =====================================================================
+     STACKLY PRELOADER
+     ===================================================================== -->
+    <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading Stackly">
+        <div class="preloader__inner">
+            <div class="preloader__brand">
+                <img class="preloader__logo" src="../logo.webp" alt="Stackly" width="160" height="36" />
+            </div>
+            <div class="preloader__spinner" aria-hidden="true"></div>
+            <div class="preloader__bar" aria-hidden="true">
+                <div class="preloader__bar-fill"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            function removePreloader() {
+                var p = document.getElementById('preloader');
+                if (p && !p.classList.contains('preloader--fade-out')) {
+                    p.classList.add('preloader--fade-out');
+                    setTimeout(function () {
+                        if (p && p.parentNode) p.parentNode.removeChild(p);
+                    }, 550);
+                }
+            }
+            if (document.readyState === 'complete') {
+                setTimeout(removePreloader, 400);
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(removePreloader, 400);
+                });
+                setTimeout(removePreloader, 2200);
+            }
+        })();
+    </script>
 
     <a class="skip-link" href="#main">Skip to content</a>
 
@@ -482,20 +518,36 @@
                             <h3 class="perspectives__title">Small teams should stay small.</h3>
                             <p class="body-sm">
                                 Adding people to a struggling project makes the struggle more
-                                expensive, not less. A short argument for depth over headcount.
+                                expensive, not less. When teams stay lean, architecture stays coherent
+                                because every contributor understands the entire problem loop.
                             </p>
+                            <div class="perspectives__tags">
+                                <span class="perspectives__tag">Team Dynamics</span>
+                                <span class="perspectives__tag">5 min read</span>
+                            </div>
                             <span class="link-arrow">Read the essay <span aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></span>
                         </div>
                     </a>
 
                     <a class="perspectives__card reveal-up" href="404.html">
-                        <div class="perspectives__body perspectives__body--quote">
+                        <figure class="perspectives__media">
+                            <img src="../asset/workspace-calm.webp"
+                                alt="A calm, orderly desk with a notebook and laptop in morning light."
+                                width="900" height="620" loading="lazy" decoding="async" />
+                        </figure>
+                        <div class="perspectives__body">
                             <p class="perspectives__category">On honesty</p>
-                            <blockquote class="perspectives__quote serif">
-                                “A product earns the right to be depended on. It doesn't claim it
-                                in a launch post.”
+                            <h3 class="perspectives__title">Earn trust before you announce it.</h3>
+                            <blockquote class="perspectives__quote serif" style="font-size: 1.15rem; margin: 0.2rem 0 0.5rem; border-left: 3px solid var(--brand-earth); padding-left: 0.85rem;">
+                                “A product earns the right to be depended on. It doesn't claim it in a launch post.”
                             </blockquote>
-                            <p class="perspectives__byline">Stackly Editorial · Illustrative sample</p>
+                            <p class="body-sm">
+                                Reliability isn't a launch announcement — it's proven in quiet moments when software handles failure gracefully without losing customer context.
+                            </p>
+                            <div class="perspectives__tags">
+                                <span class="perspectives__tag">Product Craft</span>
+                                <span class="perspectives__tag">4 min read</span>
+                            </div>
                             <span class="link-arrow">Read the essay <span aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></span>
                         </div>
                     </a>
@@ -511,8 +563,19 @@
                             <h3 class="perspectives__title">Slow down to go faster.</h3>
                             <p class="body-sm">
                                 The week you spend framing the problem is usually the week you
-                                save three times over downstream.
+                                save three times over downstream. Speed in software isn't typing faster —
+                                it's throwing away fewer finished features.
                             </p>
+                            <ul class="perspectives__list">
+                                <li><strong>Name the constraint:</strong> Define what not to solve so the core loop gets undivided focus.</li>
+                                <li><strong>Clickable reality early:</strong> Test assumptions with working prototypes before locking database models.</li>
+                                <li><strong>Reversible milestones:</strong> Ship modular releases that keep feedback immediate and rework cheap.</li>
+                            </ul>
+                            <div class="perspectives__tags">
+                                <span class="perspectives__tag">Engineering Pace</span>
+                                <span class="perspectives__tag">Architecture</span>
+                                <span class="perspectives__tag">6 min read</span>
+                            </div>
                             <span class="link-arrow">Read the essay <span aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></span>
                         </div>
                     </a>

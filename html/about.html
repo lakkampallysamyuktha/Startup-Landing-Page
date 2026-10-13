@@ -21,6 +21,42 @@
 
 <body>
 
+    <!-- =====================================================================
+     STACKLY PRELOADER
+     ===================================================================== -->
+    <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading Stackly">
+        <div class="preloader__inner">
+            <div class="preloader__brand">
+                <img class="preloader__logo" src="../logo.webp" alt="Stackly" width="160" height="36" />
+            </div>
+            <div class="preloader__spinner" aria-hidden="true"></div>
+            <div class="preloader__bar" aria-hidden="true">
+                <div class="preloader__bar-fill"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            function removePreloader() {
+                var p = document.getElementById('preloader');
+                if (p && !p.classList.contains('preloader--fade-out')) {
+                    p.classList.add('preloader--fade-out');
+                    setTimeout(function () {
+                        if (p && p.parentNode) p.parentNode.removeChild(p);
+                    }, 550);
+                }
+            }
+            if (document.readyState === 'complete') {
+                setTimeout(removePreloader, 400);
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(removePreloader, 400);
+                });
+                setTimeout(removePreloader, 2200);
+            }
+        })();
+    </script>
+
     <a class="skip-link" href="#main">Skip to content</a>
 
     <!-- =====================================================================

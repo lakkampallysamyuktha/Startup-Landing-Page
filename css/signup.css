@@ -297,6 +297,9 @@ input[type="password"]::-ms-clear {
 /* Light surface brand logo filter (Deep Atlantic Blue #0A2947) */
 .auth__panel .brand__logo,
 .brand__logo--dark {
+    height: 42px;
+    width: auto;
+    max-width: 220px;
     filter: brightness(0) saturate(100%) invert(13%) sepia(51%) saturate(2335%) hue-rotate(187deg) brightness(93%) contrast(96%) !important;
 }
 

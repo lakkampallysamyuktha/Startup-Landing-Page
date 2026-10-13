@@ -21,6 +21,42 @@
 
 <body>
 
+    <!-- =====================================================================
+     STACKLY PRELOADER
+     ===================================================================== -->
+    <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading Stackly">
+        <div class="preloader__inner">
+            <div class="preloader__brand">
+                <img class="preloader__logo" src="logo.webp" alt="Stackly" width="160" height="36" />
+            </div>
+            <div class="preloader__spinner" aria-hidden="true"></div>
+            <div class="preloader__bar" aria-hidden="true">
+                <div class="preloader__bar-fill"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            function removePreloader() {
+                var p = document.getElementById('preloader');
+                if (p && !p.classList.contains('preloader--fade-out')) {
+                    p.classList.add('preloader--fade-out');
+                    setTimeout(function () {
+                        if (p && p.parentNode) p.parentNode.removeChild(p);
+                    }, 550);
+                }
+            }
+            if (document.readyState === 'complete') {
+                setTimeout(removePreloader, 400);
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(removePreloader, 400);
+                });
+                setTimeout(removePreloader, 2200);
+            }
+        })();
+    </script>
+
     <a class="skip-link" href="#main">Skip to content</a>
 
     <!-- =====================================================================
@@ -30,7 +66,7 @@
         <div class="site-header__inner">
 
             <a class="brand" href="index.html" aria-label="Stackly — home">
-                <img class="brand__logo" src="logo.webp" alt="Stackly" width="140" height="32" />
+                <img class="brand__logo" src="logo.webp" alt="Stackly" width="160" height="36" />
             </a>
 
             <nav class="primary-nav" aria-label="Primary">
@@ -61,7 +97,7 @@
     <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Site menu">
         <div class="mobile-menu__top">
             <a class="brand" href="index.html" aria-label="Stackly — home">
-                <img class="brand__logo" src="logo.webp" alt="Stackly" width="140" height="32" />
+                <img class="brand__logo" src="logo.webp" alt="Stackly" width="160" height="36" />
             </a>
             <button class="mobile-menu__close" id="menuClose" type="button">
                 <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
@@ -527,7 +563,7 @@
        =================================================================== -->
         <section class="section section--dark people" aria-labelledby="people-title">
             <div class="people__bg" aria-hidden="true">
-                <img src="asset/how-step-1.webp"
+                <img src="asset/people-team.webp"
                     alt="" loading="lazy" />
             </div>
             <div class="container people__inner">
@@ -559,8 +595,8 @@
 
                 <figure class="people__media reveal-image-right">
                     <a href="html/404.html" class="img-link" aria-label="Explore collaborative team culture">
-                        <img src="asset/how-step-1.webp"
-                            alt="A person in an active collaborative conversation at a work desk with a laptop." width="880" height="1100"
+                        <img src="asset/people-team.webp"
+                            alt="A startup team working collaboratively at a long studio table." width="900" height="1125"
                             loading="lazy" decoding="async" />
                     </a>
                 </figure>
@@ -1063,7 +1099,7 @@
 
                 <div class="footer__brand">
                     <a class="brand" href="index.html" aria-label="Stackly — home">
-                        <img class="brand__logo" src="logo.webp" alt="Stackly" width="140" height="32" />
+                        <img class="brand__logo" src="logo.webp" alt="Stackly" width="160" height="36" />
                     </a>
                     <p class="footer__statement">
                         A product-minded startup building calm, practical software for teams who
