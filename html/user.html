@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Workspace — Stackly</title>
+    <meta name="description" content="Personal workspace for projects, velocity, prototypes, and decisions." />
+    <meta name="robots" content="noindex" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" />
+
+    <link rel="stylesheet" href="../global.css" />
+
+    <!-- Chart.js CDN Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+        :root {
+            --brand-blue: #0A2947;
+            --brand-parchment: #F3E4C9;
+            --brand-mineral: #D3D4C0;
+            --brand-earth: #8B5E3C;
+            --surface-dark: #071D33;
+            --surface-light: #F3E4C9;
+            --surface-soft: #D3D4C0;
+            --sidebar-w: 280px;
+            --header-h: 70px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-sans);
+            background-color: #F8F5EE;
+            color: var(--brand-blue);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Prevent background scroll when sidebar drawer is open */
+        html.is-locked,
+        body.is-locked {
+            overflow: hidden !important;
+            height: 100% !important;
+            max-height: 100vh !important;
+            max-height: 100dvh !important;
+            touch-action: none;
+        }
+
+        /* -----------------------------------------------------------------
+           FIXED HEADER
+           ----------------------------------------------------------------- */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-h);
+            background: #0A2947;
+            color: #F3E4C9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(1rem, 2.5vw, 2rem);
+            z-index: 100;
+            border-bottom: 1px solid rgba(243, 228, 201, 0.15);
+            box-shadow: 0 4px 20px rgba(7, 29, 51, 0.25);
+        }
+
+        .topbar__left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .logo-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-decoration: none;
+            cursor: pointer;
+            gap: 2px;
+        }
+
+        .logo-wrap {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .logo-wrap .brand__logo {
+            height: 26px;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .role-chip {
+            display: inline-block;
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #0A2947;
+            background: var(--brand-mineral);
+            padding: 0.15rem 0.48rem;
+            border-radius: 999px;
+            margin-top: 1px;
+            margin-left: 28px;
+            line-height: 1.2;
+        }
+
+        .topbar__greeting {
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(243, 228, 201, 0.2);
+            padding-left: 1.25rem;
+        }
+
+        .greeting-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #F3E4C9;
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        .greeting-sub {
+            font-size: 0.76rem;
+            color: var(--brand-mineral);
+            margin: 0;
+            opacity: 0.85;
+        }
+
+        .topbar__right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: rgba(243, 228, 201, 0.08);
+            border: 1px solid rgba(243, 228, 201, 0.2);
+            padding: 0.35rem 0.85rem 0.35rem 0.45rem;
+            border-radius: 999px;
+            color: #F3E4C9;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .profile-pill:hover {
+            background: rgba(243, 228, 201, 0.14);
+            border-color: rgba(243, 228, 201, 0.35);
+        }
+
+        .profile-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--brand-earth);
+            color: #F3E4C9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            border: 1.5px solid #F3E4C9;
+        }
+
+        .profile-email {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #F3E4C9;
+        }
+
+        .menu-btn {
+            display: none;
+            background: rgba(243, 228, 201, 0.1);
+            border: 1px solid rgba(243, 228, 201, 0.25);
+            border-radius: 6px;
+            color: #F3E4C9;
+            padding: 0.5rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* -----------------------------------------------------------------
+           LAYOUT: SIDEBAR + MAIN CONTENT
+           ----------------------------------------------------------------- */
+        .dash-shell {
+            display: flex;
+            flex: 1;
+            min-height: calc(100vh - var(--header-h));
+            position: relative;
+            padding-top: var(--header-h);
+            padding-left: var(--sidebar-w);
+        }
+
+        .dash-sidebar {
+            width: var(--sidebar-w);
+            background: #0A2947;
+            border-right: 1px solid rgba(243, 228, 201, 0.12);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem 1rem 1.25rem;
+            position: fixed;
+            left: 0;
+            top: var(--header-h);
+            height: calc(100vh - var(--header-h));
+            overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 90;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: rgba(243, 228, 201, 0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.22s ease;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+            flex-shrink: 0;
+        }
+
+        .nav-link:hover {
+            color: #F3E4C9;
+            background: rgba(243, 228, 201, 0.08);
+        }
+
+        .nav-link.is-active {
+            color: #0A2947;
+            background: var(--brand-parchment);
+            font-weight: 600;
+            border-color: var(--brand-parchment);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-link.is-active svg {
+            opacity: 1;
+            color: #0A2947;
+        }
+
+        /* Sidebar Footer: Profile Card + Logout */
+        .sidebar-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(243, 228, 201, 0.12);
+        }
+
+        .user-card {
+            background: rgba(243, 228, 201, 0.06);
+            border: 1px solid rgba(243, 228, 201, 0.14);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-card__avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--brand-earth);
+            color: #F3E4C9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            border: 2px solid var(--brand-mineral);
+        }
+
+        .user-card__info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .user-card__name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #F3E4C9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-card__email {
+            font-size: 0.74rem;
+            color: var(--brand-mineral);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0.85;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            width: 100%;
+            background: rgba(139, 94, 60, 0.2);
+            color: var(--brand-parchment);
+            border: 1px solid rgba(139, 94, 60, 0.4);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--brand-earth);
+            color: #F3E4C9;
+            border-color: var(--brand-earth);
+        }
+
+        /* -----------------------------------------------------------------
+           MAIN CONTENT AREA
+           ----------------------------------------------------------------- */
+        .dash-main {
+            flex: 1;
+            padding: clamp(1.5rem, 3vw, 2.75rem);
+            max-width: 1360px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .data-section {
+            display: none;
+            animation: fadeIn 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+
+        .data-section.is-active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(10, 41, 71, 0.1);
+            padding-bottom: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header__title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+            margin: 0 0 0.4rem;
+            color: var(--brand-blue);
+            line-height: 1.15;
+        }
+
+        .section-header__desc {
+            font-size: 0.95rem;
+            color: rgba(10, 41, 71, 0.72);
+            margin: 0;
+            max-width: 60ch;
+        }
+
+        /* Sub-sections Container (4-5 items per tab) */
+        .subsections-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Dashboard Cards & Content Blocks */
+        .sub-block {
+            background: #FFFFFF;
+            border: 1px solid rgba(10, 41, 71, 0.1);
+            border-radius: 12px;
+            padding: clamp(1.25rem, 2vw, 1.75rem);
+            box-shadow: 0 4px 20px rgba(10, 41, 71, 0.04);
+            transition: border-color 0.25s ease;
+        }
+
+        .sub-block:hover {
+            border-color: rgba(10, 41, 71, 0.22);
+        }
+
+        .sub-block__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(10, 41, 71, 0.06);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .sub-block__title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sub-block__tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(139, 94, 60, 0.12);
+            color: var(--brand-earth);
+        }
+
+        /* KPI Metric Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .kpi-card {
+            background: #F9F7F1;
+            border: 1px solid rgba(10, 41, 71, 0.08);
+            border-radius: 8px;
+            padding: 1.1rem;
+        }
+
+        .kpi-card__label {
+            font-size: 0.78rem;
+            color: rgba(10, 41, 71, 0.65);
+            margin: 0 0 0.35rem;
+            font-weight: 500;
+        }
+
+        .kpi-card__value {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .kpi-card__delta {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2F6848;
+            margin-top: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Chart Wrappers & Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .chart-box {
+            background: #FAF8F2;
+            border: 1px solid rgba(10, 41, 71, 0.08);
+            border-radius: 10px;
+            padding: 1rem 1.15rem;
+            overflow: hidden;
+        }
+
+        .chart-box__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.65rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px dashed rgba(10, 41, 71, 0.08);
+        }
+
+        .chart-box__title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .chart-box__val {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--brand-earth);
+        }
+
+        .chart-canvas-wrap {
+            position: relative;
+            width: 100%;
+            height: 180px;
+        }
+
+        /* 404 Action Button */
+        .dash-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            padding: 0.55rem 1.1rem;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #F3E4C9;
+            background: var(--brand-blue);
+            border: 1px solid var(--brand-blue);
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.22s ease;
+        }
+
+        .dash-btn:hover {
+            background: var(--brand-earth);
+            border-color: var(--brand-earth);
+            color: #F3E4C9;
+            transform: translateY(-1px);
+        }
+
+        .dash-btn--secondary {
+            background: transparent;
+            color: var(--brand-blue);
+            border-color: rgba(10, 41, 71, 0.25);
+        }
+
+        .dash-btn--secondary:hover {
+            background: rgba(10, 41, 71, 0.06);
+            color: var(--brand-blue);
+            border-color: var(--brand-blue);
+        }
+
+        /* Item Tables & Task Rows */
+        .item-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            background: #FAF8F2;
+            border: 1px solid rgba(10, 41, 71, 0.08);
+            border-radius: 8px;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .item-row__info {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .item-row__status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2F6848;
+            flex-shrink: 0;
+        }
+
+        .item-row__title {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--brand-blue);
+            margin: 0;
+        }
+
+        .item-row__meta {
+            font-size: 0.78rem;
+            color: rgba(10, 41, 71, 0.6);
+            margin: 0;
+        }
+
+        .sidebar-mobile-header {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 1.15rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(243, 228, 201, 0.15);
+        }
+
+        .sidebar-mobile-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #F3E4C9;
+        }
+
+        .sidebar-close-btn {
+            background: rgba(243, 228, 201, 0.1);
+            border: 1px solid rgba(243, 228, 201, 0.2);
+            color: #F3E4C9;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-close-btn:hover {
+            background: var(--brand-earth);
+            color: #F3E4C9;
+            border-color: var(--brand-earth);
+        }
+
+        .sidebar-close-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* -----------------------------------------------------------------
+           MOBILE RESPONSIVENESS
+           ----------------------------------------------------------------- */
+        @media (max-width: 900px) {
+            .menu-btn {
+                display: inline-flex;
+            }
+
+            .dash-shell {
+                padding-left: 0;
+            }
+
+            .dash-sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                z-index: 1000;
+                transform: translateX(-100%);
+                box-shadow: none;
+                padding: 1.25rem 1.5rem 2rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior: contain;
+                touch-action: pan-y;
+            }
+
+            .dash-sidebar.is-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            /* Center menu items vertically & horizontally on mobile */
+            .dash-sidebar nav {
+                margin: auto 0;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .nav-list {
+                width: 100%;
+                max-width: 380px;
+                gap: 0.75rem;
+            }
+
+            .nav-link {
+                justify-content: center;
+                text-align: center;
+                font-size: 1.05rem;
+                padding: 0.95rem 1.25rem;
+            }
+
+            .sidebar-bottom {
+                width: 100%;
+                max-width: 380px;
+                margin: 0 auto;
+            }
+
+            .topbar__greeting {
+                display: none;
+            }
+
+            .dash-main {
+                padding: 1.25rem;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .profile-email {
+                display: none;
+            }
+
+            .profile-pill {
+                padding: 0.25rem;
+            }
+
+            .section-header__title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =====================================================================
+     FIXED TOPBAR
+     ===================================================================== -->
+    <header class="topbar">
+        <div class="topbar__left">
+            <button class="menu-btn" id="menuToggle" aria-label="Toggle navigation drawer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- 1 & 7: Top Left Logo redirects to reload user.html & resets to first section; USER role chip -->
+            <a class="logo-group" href="user.html" id="topLogo" aria-label="Reload workspace and open first section">
+                <div class="logo-wrap">
+                    <img class="brand__logo" src="../logo.webp" alt="Stackly" width="130" height="26" />
+                </div>
+                <span class="role-chip">USER</span>
+            </a>
+
+            <!-- 11: Top bar Greeting -->
+            <div class="topbar__greeting">
+                <h1 class="greeting-title">Hello, Alex Morgan</h1>
+                <p class="greeting-sub">Prototype builder · Workspace Active</p>
+            </div>
+        </div>
+
+        <!-- 11: Right corner email profile pill -->
+        <div class="topbar__right">
+            <a href="404.html" class="profile-pill" title="View Profile">
+                <div class="profile-avatar">AM</div>
+                <span class="profile-email">alex.morgan@stackly.dev</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- =====================================================================
+     SHELL: SIDEBAR + MAIN CONTENT
+     ===================================================================== -->
+    <div class="dash-shell">
+
+        <!-- 2: SIDEBAR WITH 5 DATA-SECTIONS & LOGOUT BUTTON -->
+        <aside class="dash-sidebar" id="dashSidebar">
+            <!-- Mobile Header with Logo & Close Button -->
+            <div class="sidebar-mobile-header">
+                <a class="logo-group" href="user.html" id="sidebarLogo" aria-label="Reload workspace and open first section" style="gap: 0.6rem;">
+                    <div class="logo-wrap">
+                        <img class="brand__logo" src="../logo.webp" alt="Stackly" width="125" height="25" />
+                    </div>
+                    <span class="role-chip">USER</span>
+                </a>
+                <button class="sidebar-close-btn" id="sidebarClose" aria-label="Close menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav aria-label="Dashboard Navigation">
+                <ul class="nav-list" id="sidebarNav">
+                    <li>
+                        <button class="nav-link is-active" data-target="sec-momentum">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                            </svg>
+                            <span>Overview &amp; Momentum</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link" data-target="sec-projects">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            <span>Projects &amp; Workflows</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link" data-target="sec-prototypes">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                <polyline points="2 17 12 22 22 17"></polyline>
+                                <polyline points="2 12 12 17 22 12"></polyline>
+                            </svg>
+                            <span>Prototypes &amp; Canvas</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link" data-target="sec-decisions">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <span>Knowledge &amp; Decisions</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link" data-target="sec-account">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                            <span>Preferences &amp; Account</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <!-- 12: Card with user name + email just above logout -->
+                <div class="user-card">
+                    <div class="user-card__avatar">AM</div>
+                    <div class="user-card__info">
+                        <span class="user-card__name">Alex Morgan</span>
+                        <span class="user-card__email">alex.morgan@stackly.dev</span>
+                    </div>
+                </div>
+
+                <!-- 2 & 9: Logout button redirects to login.html -->
+                <a class="logout-btn" href="login.html">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN DASHBOARD CONTENT -->
+        <main class="dash-main">
+
+            <!-- ===============================================================
+             DATA-SECTION 1: OVERVIEW & MOMENTUM (5 Subsections)
+             =============================================================== -->
+            <section class="data-section is-active" id="sec-momentum">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">Overview &amp; Momentum</h2>
+                        <p class="section-header__desc">Sprint velocity, high-leverage bottlenecks, and personal contribution cadence.</p>
+                    </div>
+                    <!-- 10: Action button redirects to 404 -->
+                    <a class="dash-btn" href="404.html">Create Fast Artifact +</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 1.1: Sprint KPI Scorecards -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Sprint Velocity &amp; Delivery Pulse</h3>
+                            <span class="sub-block__tag">Current Cycle</span>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Active Tasks</p>
+                                <p class="kpi-card__value">14</p>
+                                <p class="kpi-card__delta">↑ 3 shipped this week</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Velocity Pace</p>
+                                <p class="kpi-card__value">94.2%</p>
+                                <p class="kpi-card__delta">↑ 4.1% ahead of goal</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Blockers Cleared</p>
+                                <p class="kpi-card__value">8</p>
+                                <p class="kpi-card__delta">Direct team alignment</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Release Target</p>
+                                <p class="kpi-card__value">v1.4</p>
+                                <p class="kpi-card__delta">Scheduled for Friday</p>
+                            </div>
+                        </div>
+                        <a class="dash-btn dash-btn--secondary" href="404.html">View Detailed Sprint Board →</a>
+                    </div>
+
+                    <!-- Subsection 1.2: Interactive SVG Velocity & Work Distribution Charts -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Sprint Velocity &amp; Delivery Flow</h3>
+                            <span class="sub-block__tag">Live Telemetry</span>
+                        </div>
+                        <div class="charts-grid">
+                            <!-- Chart 1: Compact Burndown & Execution Trajectory (Chart.js) -->
+                            <div class="chart-box">
+                                <div class="chart-box__header">
+                                    <h4 class="chart-box__title">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                                        Burndown Trajectory
+                                    </h4>
+                                    <span class="chart-box__val">94.2% Pace</span>
+                                </div>
+                                <div class="chart-canvas-wrap">
+                                    <canvas id="userBurndownChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Chart 2: Output Category Bar Chart (Chart.js) -->
+                            <div class="chart-box">
+                                <div class="chart-box__header">
+                                    <h4 class="chart-box__title">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2947" stroke-width="2.2"><rect x="3" y="12" width="4" height="9"></rect><rect x="10" y="7" width="4" height="14"></rect><rect x="17" y="3" width="4" height="18"></rect></svg>
+                                        Weekly Output by Category
+                                    </h4>
+                                    <span class="chart-box__val">+18 Items</span>
+                                </div>
+                                <div class="chart-canvas-wrap">
+                                    <canvas id="userOutputChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 1.3: Active Tasks Queue -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Immediate Focus Tasks</h3>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Filter Queue</a>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #8B5E3C;"></span>
+                                    <div>
+                                        <p class="item-row__title">Refine workspace onboarding friction points</p>
+                                        <p class="item-row__meta">Prototype #104 · Design Review</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Open Spec</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #0A2947;"></span>
+                                    <div>
+                                        <p class="item-row__title">Synchronize decision records with team canvas</p>
+                                        <p class="item-row__meta">Core Thread · Architecture</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Review</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #2F6848;"></span>
+                                    <div>
+                                        <p class="item-row__title">Export weekly telemetry summary for engineering sync</p>
+                                        <p class="item-row__meta">Field Sync · Ready to Ship</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Download</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 1.4: Recent Teammate Interactions -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Async Team Signals</h3>
+                            <span class="sub-block__tag">Latest 24h</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: rgba(10, 41, 71, 0.7); margin-bottom: 1rem;">
+                            Direct comments and review notes from collaborators across active workspaces.
+                        </p>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Elena Rostova</p>
+                                <p class="kpi-card__title" style="font-size: 0.9rem; font-weight: 600; margin: 0.2rem 0;">"The simplified step-two prototype eliminated 60% of test drop-offs."</p>
+                                <a href="404.html" style="font-size: 0.78rem; color: var(--brand-earth); font-weight: 600;">View in Canvas →</a>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">David Chen</p>
+                                <p class="kpi-card__title" style="font-size: 0.9rem; font-weight: 600; margin: 0.2rem 0;">"Merged the clean token mappings for the mobile drawer layout."</p>
+                                <a href="404.html" style="font-size: 0.78rem; color: var(--brand-earth); font-weight: 600;">View Commit →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 1.5: Quick Export & Next Milestones -->
+                    <div class="sub-block" style="background: #F4EDE0; border-color: var(--brand-mineral);">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Workspace Cadence Checklist</h3>
+                            <a class="dash-btn" href="404.html">Run Audit Checklist</a>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75); margin: 0;">
+                            Keep momentum high by closing open discussion threads and archiving non-essential prototypes every Friday afternoon.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+             DATA-SECTION 2: PROJECTS & WORKFLOWS (4 Subsections)
+             =============================================================== -->
+            <section class="data-section" id="sec-projects">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">Projects &amp; Workflows</h2>
+                        <p class="section-header__desc">Organize product roadmaps, milestones, and shared team threads without unnecessary ceremony.</p>
+                    </div>
+                    <a class="dash-btn" href="404.html">New Project Stream +</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 2.1: Project Summary Roster -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Active Product Workstreams</h3>
+                            <span class="sub-block__tag">4 In Progress</span>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">Stackly Mobile Experience Refresh</p>
+                                        <p class="item-row__meta">Milestone: Alpha Flight · Due next Tuesday · 78% Complete</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Manage Stream</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #8B5E3C;"></span>
+                                    <div>
+                                        <p class="item-row__title">Shared Decision Canvas v2</p>
+                                        <p class="item-row__meta">Milestone: Architectural RFC · 42% Complete</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Manage Stream</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">Offline Sync Telemetry Layer</p>
+                                        <p class="item-row__meta">Milestone: Protocol Validation · 91% Complete</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Manage Stream</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 2.2: Workstream Allocation Chart -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Capacity &amp; Resource Distribution  </h3>
+                            <span class="sub-block__tag">Hours / Week</span>
+                        </div>
+                        <div class="chart-box">
+                            <svg class="chart-svg" viewBox="0 0 720 180" role="img" aria-label="Horizontal bar chart of hours spent by project stream">
+                                <g transform="translate(40, 20)">
+                                    <text x="0" y="20" font-size="12" font-weight="600" fill="#0A2947">Mobile Refresh</text>
+                                    <rect x="150" y="8" width="460" height="18" rx="4" fill="#8B5E3C" />
+                                    <text x="620" y="22" font-size="11" fill="#0A2947" font-weight="600">32h</text>
+                                    
+                                    <text x="0" y="60" font-size="12" font-weight="600" fill="#0A2947">Decision Canvas</text>
+                                    <rect x="150" y="48" width="320" height="18" rx="4" fill="#0A2947" />
+                                    <text x="480" y="62" font-size="11" fill="#0A2947" font-weight="600">22h</text>
+                                    
+                                    <text x="0" y="100" font-size="12" font-weight="600" fill="#0A2947">Telemetry Sync</text>
+                                    <rect x="150" y="88" width="210" height="18" rx="4" fill="#D3D4C0" stroke="#0A2947" stroke-width="1" />
+                                    <text x="370" y="102" font-size="11" fill="#0A2947" font-weight="600">14h</text>
+                                    
+                                    <text x="0" y="140" font-size="12" font-weight="600" fill="#0A2947">Internal Tooling</text>
+                                    <rect x="150" y="128" width="120" height="18" rx="4" fill="#8B5E3C" opacity="0.6" />
+                                    <text x="280" y="142" font-size="11" fill="#0A2947" font-weight="600">8h</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 2.3: Milestone Delivery Checklist -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Upcoming Milestones</h3>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Sync Calendar</a>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Due in 3 Days</p>
+                                <p style="font-weight: 700; color: #0A2947; margin: 0.2rem 0;">Usability Audit #3</p>
+                                <p style="font-size: 0.78rem; color: #8B5E3C;">5 prototype testers confirmed</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Due in 8 Days</p>
+                                <p style="font-weight: 700; color: #0A2947; margin: 0.2rem 0;">Database Schema Migration</p>
+                                <p style="font-size: 0.78rem; color: #2F6848;">Zero downtime playbook ready</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Due in 14 Days</p>
+                                <p style="font-weight: 700; color: #0A2947; margin: 0.2rem 0;">Client Feedback Summit</p>
+                                <p style="font-size: 0.78rem; color: #0A2947;">Reviewing live alpha builds</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 2.4: Fast Workflow Automation -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Continuous Flow Rules</h3>
+                            <span class="sub-block__tag">Automated</span>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            When a feature is tagged <code>ready-for-review</code>, automatically create a lightweight decision thread and notify target engineers.
+                        </p>
+                        <a class="dash-btn" href="404.html">Configure Trigger Rules</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+             DATA-SECTION 3: PROTOTYPES & CANVAS (4 Subsections)
+             =============================================================== -->
+            <section class="data-section" id="sec-prototypes">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">Prototypes &amp; Canvas</h2>
+                        <p class="section-header__desc">Live prototype previews, user feedback telemetry, and interactive build artifacts.</p>
+                    </div>
+                    <a class="dash-btn" href="404.html">Deploy New Build +</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 3.1: Active Interactive Builds -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Running Prototype Environments</h3>
+                            <span class="sub-block__tag">3 Staging Builds</span>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">Build #208: Single-click Project Switcher</p>
+                                        <p class="item-row__meta">Updated 2h ago · Latency 14ms · 18 Active test sessions</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a class="dash-btn" href="404.html">Launch Preview</a>
+                                    <a class="dash-btn dash-btn--secondary" href="404.html">Telemetry</a>
+                                </div>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #8B5E3C;"></span>
+                                    <div>
+                                        <p class="item-row__title">Build #204: Keyboard Shortcuts &amp; Palette Navigation</p>
+                                        <p class="item-row__meta">Updated yesterday · 42 Recorded feedback events</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a class="dash-btn" href="404.html">Launch Preview</a>
+                                    <a class="dash-btn dash-btn--secondary" href="404.html">Telemetry</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 3.2: User Testing Engagement Telemetry -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">User Task Success Rate (Donut Chart)</h3>
+                            <span class="sub-block__tag">Last 50 Test Runs</span>
+                        </div>
+                        <div class="chart-box" style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem;">
+                            <svg width="180" height="180" viewBox="0 0 100 100" role="img" aria-label="Donut chart showing 86% task success">
+                                <circle cx="50" cy="50" r="38" fill="transparent" stroke="#D3D4C0" stroke-width="14" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" stroke="#8B5E3C" stroke-width="14"
+                                    stroke-dasharray="238.7" stroke-dashoffset="33.4" stroke-linecap="round"
+                                    transform="rotate(-90 50 50)" />
+                                <text x="50" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#0A2947">86%</text>
+                            </svg>
+                            <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.88rem;">
+                                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                    <span style="width: 12px; height: 12px; border-radius: 3px; background: #8B5E3C;"></span>
+                                    <span><strong>86%</strong> Completed without hesitation</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                    <span style="width: 12px; height: 12px; border-radius: 3px; background: #D3D4C0;"></span>
+                                    <span><strong>14%</strong> Encountered ambiguous friction</span>
+                                </div>
+                                <a class="dash-btn" href="404.html" style="margin-top: 0.5rem;">Review Session Recordings</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 3.3: Interactive Canvas Components -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Living Prototype Design Tokens</h3>
+                            <span class="sub-block__tag">System Sync</span>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card" style="border-left: 4px solid #0A2947;">
+                                <p class="kpi-card__label">Brand Anchor</p>
+                                <p style="font-family: monospace; font-weight: 700;">#0A2947</p>
+                                <p style="font-size: 0.75rem; color: #0A2947;">Deep Atlantic Blue</p>
+                            </div>
+                            <div class="kpi-card" style="border-left: 4px solid #F3E4C9;">
+                                <p class="kpi-card__label">Primary Surface</p>
+                                <p style="font-family: monospace; font-weight: 700;">#F3E4C9</p>
+                                <p style="font-size: 0.75rem; color: #8B5E3C;">Warm Parchment</p>
+                            </div>
+                            <div class="kpi-card" style="border-left: 4px solid #D3D4C0;">
+                                <p class="kpi-card__label">Muted Support</p>
+                                <p style="font-family: monospace; font-weight: 700;">#D3D4C0</p>
+                                <p style="font-size: 0.75rem; color: #0A2947;">Soft Mineral</p>
+                            </div>
+                            <div class="kpi-card" style="border-left: 4px solid #8B5E3C;">
+                                <p class="kpi-card__label">Editorial Accent</p>
+                                <p style="font-family: monospace; font-weight: 700;">#8B5E3C</p>
+                                <p style="font-size: 0.75rem; color: #8B5E3C;">Earth Brown</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 3.4: Sharing & Stakeholder Feedback -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Shareable Prototype Links</h3>
+                            <a class="dash-btn" href="404.html">Create Guest Link</a>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            Generate access tokens that allow external test users to try interactive builds without requiring a full company account.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+             DATA-SECTION 4: KNOWLEDGE & DECISIONS (4 Subsections)
+             =============================================================== -->
+            <section class="data-section" id="sec-decisions">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">Knowledge &amp; Decisions</h2>
+                        <p class="section-header__desc">Decision records, architecture RFCs, field notes, and contextual documentation.</p>
+                    </div>
+                    <a class="dash-btn" href="404.html">Log Architecture Decision +</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 4.1: Architecture Decision Records (ADRs) -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Recent Architecture Decision Records</h3>
+                            <span class="sub-block__tag">3 Accepted</span>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">ADR-014: Plain Vanilla CSS &amp; Design Token Architecture</p>
+                                        <p class="item-row__meta">Approved by Engineering Council · Replaces heavy framework overhead</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Read Record</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">ADR-013: Directional GSAP Reveals for Spatial Storytelling</p>
+                                        <p class="item-row__meta">Approved by Experience Team · Enforces accessible scroll triggers</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Read Record</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">ADR-012: Offline First Workspace Storage Sync</p>
+                                        <p class="item-row__meta">Approved by Core Architecture</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Read Record</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 4.2: Field Notes Knowledge Base -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Published Field Notes &amp; Dispatches</h3>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Open Knowledge Base</a>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Article Summary</p>
+                                <p style="font-weight: 700; color: #0A2947;">The Prototype is the Argument</p>
+                                <p style="font-size: 0.8rem; color: rgba(10,41,71,0.7);">Why working software tests assumptions faster than requirement slide decks.</p>
+                                <a class="dash-btn dash-btn--secondary" href="404.html" style="margin-top: 0.5rem; font-size: 0.75rem;">View Note</a>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Article Summary</p>
+                                <p style="font-weight: 700; color: #0A2947;">Say Less, Decide Sooner</p>
+                                <p style="font-size: 0.8rem; color: rgba(10,41,71,0.7);">A practical guide to narrowing questions before expanding speculative solutions.</p>
+                                <a class="dash-btn dash-btn--secondary" href="404.html" style="margin-top: 0.5rem; font-size: 0.75rem;">View Note</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 4.3: Decision Velocity Chart -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Team Alignment Speed (Resolution Trend)</h3>
+                            <span class="sub-block__tag">Time to Consensus</span>
+                        </div>
+                        <div class="chart-box">
+                            <svg class="chart-svg" viewBox="0 0 700 120" role="img" aria-label="Line trend showing average hours to resolve decision threads">
+                                <line x1="40" y1="90" x2="660" y2="90" stroke="#0A2947" stroke-opacity="0.1" />
+                                <path d="M50 80 Q 200 65 350 45 T 650 25" fill="none" stroke="#2F6848" stroke-width="3" stroke-linecap="round" />
+                                <circle cx="350" cy="45" r="5" fill="#2F6848" stroke="#F3E4C9" stroke-width="2" />
+                                <circle cx="650" cy="25" r="5" fill="#2F6848" stroke="#F3E4C9" stroke-width="2" />
+                                <text x="50" y="110" font-size="11" fill="#0A2947" opacity="0.6">Week 1 (48h)</text>
+                                <text x="350" y="110" font-size="11" fill="#0A2947" opacity="0.6">Week 3 (24h)</text>
+                                <text x="610" y="110" font-size="11" fill="#0A2947" opacity="0.6">Current (12h)</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 4.4: Export Decision Log -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Decision Records Export</h3>
+                            <a class="dash-btn" href="404.html">Export Markdown Archive</a>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            Download the entire decision trail formatted as portable Markdown documents to maintain ownership and independence.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+             DATA-SECTION 5: PREFERENCES & ACCOUNT (4 Subsections)
+             =============================================================== -->
+            <section class="data-section" id="sec-account">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">Preferences &amp; Account</h2>
+                        <p class="section-header__desc">Profile credentials, notification rhythm, interface density, and security keys.</p>
+                    </div>
+                    <a class="dash-btn" href="404.html">Save All Changes</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 5.1: User Credentials Summary -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Profile Identification</h3>
+                            <span class="sub-block__tag">Verified User</span>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Full Name</p>
+                                <p style="font-weight: 700; color: #0A2947; font-size: 1.1rem;">Alex Morgan</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Email Address</p>
+                                <p style="font-weight: 700; color: #0A2947; font-size: 1.1rem;">alex.morgan@stackly.dev</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Assigned Role</p>
+                                <p style="font-weight: 700; color: var(--brand-earth); font-size: 1.1rem;">Product Builder</p>
+                            </div>
+                        </div>
+                        <a class="dash-btn dash-btn--secondary" href="404.html">Edit Identity Details</a>
+                    </div>
+
+                    <!-- Subsection 5.2: Notification Cadence Preferences -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Communication &amp; Notification Cadence</h3>
+                            <span class="sub-block__tag">Restrained</span>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            Stackly defaults to quiet batches. We only send notifications when your immediate input is required to unblock a colleague.
+                        </p>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+                            <a class="dash-btn" href="404.html">Daily Digest Mode (Active)</a>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Immediate Mentions</a>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Quiet Focus Mode</a>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 5.3: Authentication & Device Security -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Active Hardware Sessions</h3>
+                            <span class="sub-block__tag">2 Keys Paired</span>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">MacBook Pro 16" (Current Device)</p>
+                                        <p class="item-row__meta">San Francisco, CA · Authenticated via Passkey</p>
+                                    </div>
+                                </div>
+                                <span style="font-size: 0.78rem; font-weight: 600; color: #2F6848;">Active Now</span>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">iPhone 15 Pro — Mobile Workspace</p>
+                                        <p class="item-row__meta">Last synced 45 minutes ago</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn dash-btn--secondary" href="404.html">Revoke</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 5.4: Danger Zone & Workspace Data -->
+                    <div class="sub-block" style="border-color: rgba(139, 94, 60, 0.3);">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title" style="color: var(--brand-earth);">Data Export &amp; Workspace Exit</h3>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            You can export an unencrypted archive of all your prototypes, task threads, and decision notes at any moment.
+                        </p>
+                        <a class="dash-btn dash-btn--secondary" href="404.html">Export Full JSON Archive</a>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- SCRIPT FOR TAB SWITCHING, DRAWER TOGGLE & RELOAD -->
+    <script>
+        (function () {
+            'use strict';
+
+            // Sidebar navigation tab switching
+            var navLinks = document.querySelectorAll('#sidebarNav .nav-link');
+            var sections = document.querySelectorAll('.data-section');
+            var sidebar = document.getElementById('dashSidebar');
+            var menuToggle = document.getElementById('menuToggle');
+            var topLogo = document.getElementById('topLogo');
+
+            function switchSection(targetId) {
+                sections.forEach(function (sec) {
+                    sec.classList.remove('is-active');
+                });
+                navLinks.forEach(function (btn) {
+                    btn.classList.remove('is-active');
+                });
+
+                var activeSec = document.getElementById(targetId);
+                if (activeSec) {
+                    activeSec.classList.add('is-active');
+                }
+
+                var activeBtn = document.querySelector('[data-target="' + targetId + '"]');
+                if (activeBtn) {
+                    activeBtn.classList.add('is-active');
+                }
+
+                // Close mobile drawer if open and restore scroll
+                closeSidebar();
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            navLinks.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var target = btn.getAttribute('data-target');
+                    if (target) {
+                        switchSection(target);
+                    }
+                });
+            });
+
+            // 1 & 7: Top Left Logo redirects to reload & opens first data-section
+            var sidebarLogo = document.getElementById('sidebarLogo');
+            function handleLogoClick(e) {
+                if (e) e.preventDefault();
+                closeSidebar();
+                switchSection('sec-momentum');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            if (topLogo) {
+                topLogo.addEventListener('click', handleLogoClick);
+            }
+            if (sidebarLogo) {
+                sidebarLogo.addEventListener('click', handleLogoClick);
+            }
+
+            var sidebarClose = document.getElementById('sidebarClose');
+
+            function openSidebar() {
+                if (sidebar) {
+                    sidebar.classList.add('is-open');
+                    document.documentElement.classList.add('is-locked');
+                    document.body.classList.add('is-locked');
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                    if (menuToggle) {
+                        menuToggle.setAttribute('aria-expanded', 'true');
+                    }
+                }
+            }
+
+            function closeSidebar() {
+                if (sidebar) {
+                    sidebar.classList.remove('is-open');
+                    document.documentElement.classList.remove('is-locked');
+                    document.body.classList.remove('is-locked');
+                    document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
+                    if (menuToggle) {
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            }
+
+            // Prevent background touch scrolling when mobile drawer is open
+            document.addEventListener('touchmove', function (e) {
+                if (sidebar && sidebar.classList.contains('is-open')) {
+                    if (!sidebar.contains(e.target)) {
+                        e.preventDefault();
+                    }
+                }
+            }, { passive: false });
+
+            // Restore scroll if resized above mobile breakpoint
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 900 && sidebar && sidebar.classList.contains('is-open')) {
+                    closeSidebar();
+                }
+            });
+
+            // Mobile menu drawer toggle
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function () {
+                    if (sidebar && sidebar.classList.contains('is-open')) {
+                        closeSidebar();
+                    } else {
+                        openSidebar();
+                    }
+                });
+            }
+
+            // Mobile close button
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function () {
+                    closeSidebar();
+                });
+            }
+
+            // Close sidebar when pressing Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && sidebar && sidebar.classList.contains('is-open')) {
+                    closeSidebar();
+                }
+            });
+
+            // Retrieve email and username from sessionStorage (set during login)
+            try {
+                var storedEmail = sessionStorage.getItem('stackly_user_email');
+                var storedName = sessionStorage.getItem('stackly_user_name');
+                if (storedEmail || storedName) {
+                    var greetingTitle = document.querySelector('.greeting-title');
+                    if (greetingTitle && storedName) {
+                        greetingTitle.textContent = 'Hello, ' + storedName;
+                    }
+                    var profileEmailEl = document.querySelector('.profile-email');
+                    if (profileEmailEl && storedEmail) {
+                        profileEmailEl.textContent = storedEmail;
+                    }
+                    var profileAvatarEl = document.querySelector('.profile-avatar');
+                    if (profileAvatarEl && storedName) {
+                        profileAvatarEl.textContent = storedName.substring(0, 2).toUpperCase();
+                    }
+                    var accountEmail = document.querySelector('#sec-account .kpi-card:nth-child(2) p:nth-child(2)');
+                    if (accountEmail && storedEmail) {
+                        accountEmail.textContent = storedEmail;
+                    }
+                    var accountName = document.querySelector('#sec-account .kpi-card:nth-child(1) p:nth-child(2)');
+                    if (accountName && storedName) {
+                        accountName.textContent = storedName;
+                    }
+                    // Sidebar bottom user card sync
+                    var userCardName = document.querySelector('.user-card__name');
+                    if (userCardName && storedName) {
+                        userCardName.textContent = storedName;
+                    }
+                    var userCardEmail = document.querySelector('.user-card__email');
+                    if (userCardEmail && storedEmail) {
+                        userCardEmail.textContent = storedEmail;
+                    }
+                    var userCardAvatar = document.querySelector('.user-card__avatar');
+                    if (userCardAvatar && storedName) {
+                        userCardAvatar.textContent = storedName.substring(0, 2).toUpperCase();
+                    }
+                }
+            } catch (err) { /* storage fallback */ }
+
+            // -------------------------------------------------------------
+            // Chart.js Interactive Charts Setup (User Dashboard)
+            // -------------------------------------------------------------
+            if (typeof Chart !== 'undefined') {
+                Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+                Chart.defaults.color = '#0A2947';
+
+                // Chart 1: Burndown & Execution Trajectory (Spline Area)
+                var burndownCtx = document.getElementById('userBurndownChart');
+                if (burndownCtx) {
+                    new Chart(burndownCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Goal'],
+                            datasets: [{
+                                label: 'Actual Pace',
+                                data: [15, 28, 46, 68, 85, 98],
+                                borderColor: '#8B5E3C',
+                                backgroundColor: function(context) {
+                                    var chart = context.chart;
+                                    var ctx = chart.ctx;
+                                    var gradient = ctx.createLinearGradient(0, 0, 0, 150);
+                                    gradient.addColorStop(0, 'rgba(139, 94, 60, 0.32)');
+                                    gradient.addColorStop(1, 'rgba(139, 94, 60, 0.0)');
+                                    return gradient;
+                                },
+                                fill: true,
+                                tension: 0.38,
+                                borderWidth: 2.4,
+                                pointBackgroundColor: '#8B5E3C',
+                                pointBorderColor: '#F3E4C9',
+                                pointBorderWidth: 2,
+                                pointRadius: 4.5,
+                                pointHoverRadius: 6.5
+                            }, {
+                                label: 'Baseline Target',
+                                data: [15, 32, 49, 66, 82, 100],
+                                borderColor: 'rgba(10, 41, 71, 0.35)',
+                                borderDash: [5, 5],
+                                fill: false,
+                                tension: 0,
+                                borderWidth: 1.5,
+                                pointRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    backgroundColor: '#0A2947',
+                                    titleColor: '#F3E4C9',
+                                    bodyColor: '#F3E4C9',
+                                    padding: 8,
+                                    cornerRadius: 6,
+                                    callbacks: {
+                                        label: function(item) {
+                                            return item.dataset.label + ': ' + item.parsed.y + '%';
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 10 }, color: 'rgba(10, 41, 71, 0.65)' }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    max: 105,
+                                    grid: { color: 'rgba(10, 41, 71, 0.06)' },
+                                    ticks: {
+                                        stepSize: 35,
+                                        font: { size: 10 },
+                                        color: 'rgba(10, 41, 71, 0.55)',
+                                        callback: function(v) { return v + '%'; }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Chart 2: Output by Category (Bar Chart)
+                var outputCtx = document.getElementById('userOutputChart');
+                if (outputCtx) {
+                    new Chart(outputCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Proto', 'Code', 'ADR', 'Fixes', 'Tests'],
+                            datasets: [{
+                                label: 'Completed Deliverables',
+                                data: [6, 10, 5, 4, 8],
+                                backgroundColor: [
+                                    '#0A2947',
+                                    '#8B5E3C',
+                                    '#D3D4C0',
+                                    'rgba(10, 41, 71, 0.75)',
+                                    'rgba(139, 94, 60, 0.88)'
+                                ],
+                                borderColor: [
+                                    '#0A2947',
+                                    '#8B5E3C',
+                                    '#0A2947',
+                                    '#0A2947',
+                                    '#8B5E3C'
+                                ],
+                                borderWidth: 1,
+                                borderRadius: 4,
+                                barPercentage: 0.55
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0A2947',
+                                    titleColor: '#F3E4C9',
+                                    bodyColor: '#F3E4C9',
+                                    padding: 8,
+                                    cornerRadius: 6,
+                                    callbacks: {
+                                        label: function(item) {
+                                            return item.parsed.y + ' items completed';
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 10 }, color: 'rgba(10, 41, 71, 0.65)' }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(10, 41, 71, 0.06)' },
+                                    ticks: {
+                                        stepSize: 3,
+                                        font: { size: 10 },
+                                        color: 'rgba(10, 41, 71, 0.55)'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>

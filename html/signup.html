@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Create an account — Stackly</title>
+    <meta name="description" content="Create your Stackly workspace account." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" />
+
+    <link rel="stylesheet" href="../global.css" />
+    <link rel="stylesheet" href="../css/signup.css" />
+
+    <script>document.documentElement.classList.add('has-js');</script>
+</head>
+
+<body class="auth-page">
+
+    <a class="skip-link" href="#auth-main">Skip to form</a>
+
+    <!-- Floating Back-to-Home Chip -->
+    <a class="auth-chip-home" href="../index.html" aria-label="Back to home page">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 13L5 8l5-5" />
+        </svg>
+        <span>Back to Home</span>
+    </a>
+
+    <!-- =====================================================================
+     AUTH LAYOUT
+     ===================================================================== -->
+    <main class="auth auth--signup" id="auth-main">
+
+        <!-- ---------------------------------------------------------------
+         VISUAL PANEL
+         --------------------------------------------------------------- -->
+        <aside class="auth__visual">
+
+            <figure class="auth__visual-media auth-anim-fade">
+                <img src="../asset/how-step-3.webp"
+                    alt="A small product team gathered around a table, reviewing a plan together."
+                    width="1200" height="1600" fetchpriority="high" decoding="async" />
+            </figure>
+
+            <div class="auth__visual-content auth-anim-left">
+
+                <div class="auth__visual-body">
+                    <p class="auth__visual-eyebrow">Getting started</p>
+                    <p class="auth__visual-statement serif">
+                        Start with the problem. The rest of the workspace can wait.
+                    </p>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- ---------------------------------------------------------------
+         FORM PANEL
+         --------------------------------------------------------------- -->
+        <section class="auth__panel" aria-labelledby="signup-title">
+
+            <div class="auth__panel-inner">
+
+                <div class="auth__panel-top">
+                    <a class="brand auth__brand" href="../index.html" aria-label="Stackly — home">
+                        <img class="brand__logo brand__logo--dark" src="../logo.webp" alt="Stackly" width="140" height="32" />
+                    </a>
+                    <a class="auth__back-inline" href="../index.html" aria-label="Back to home page">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M10 13L5 8l5-5" />
+                        </svg>
+                        <span>Back to Home</span>
+                    </a>
+                </div>
+
+                <header class="auth__head">
+                    <p class="eyebrow">Create an account</p>
+                    <h1 class="auth__title" id="signup-title">Set up your Stackly workspace.</h1>
+                    <p class="auth__lede">
+                        Enter your details to create an account and join the platform.
+                    </p>
+                </header>
+
+                <form class="auth-form" id="signupForm" novalidate autocomplete="off">
+
+                    <div class="auth-field">
+                        <label class="auth-label" for="signup-email">
+                            Email <span class="auth-required" aria-hidden="true">*</span>
+                            <span class="visually-hidden">(required)</span>
+                        </label>
+                        <input class="auth-input" type="email" id="signup-email" name="email" autocomplete="off"
+                            inputmode="email" placeholder="you@example.com" required aria-required="true"
+                            aria-describedby="signup-email-error" />
+                        <p class="auth-error" id="signup-email-error" role="alert" hidden></p>
+                    </div>
+
+                    <div class="auth-field">
+                        <label class="auth-label" for="signup-password">
+                            Password <span class="auth-required" aria-hidden="true">*</span>
+                            <span class="visually-hidden">(required)</span>
+                        </label>
+                        <div class="auth-input-wrap">
+                            <input class="auth-input" type="password" id="signup-password" name="password"
+                                autocomplete="new-password" required aria-required="true"
+                                aria-describedby="signup-password-error" />
+                            <button class="auth-toggle" type="button" id="signupPwToggle"
+                                aria-controls="signup-password" aria-pressed="false" aria-label="Toggle password visibility">
+                                <svg class="auth-eye" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="auth-eye-slash" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="auth-error" id="signup-password-error" role="alert" hidden></p>
+                    </div>
+
+                    <div class="auth-field">
+                        <label class="auth-label" for="signup-confirm">
+                            Confirm password <span class="auth-required" aria-hidden="true">*</span>
+                            <span class="visually-hidden">(required)</span>
+                        </label>
+                        <div class="auth-input-wrap">
+                            <input class="auth-input" type="password" id="signup-confirm" name="confirm"
+                                autocomplete="new-password" required aria-required="true"
+                                aria-describedby="signup-confirm-error" />
+                            <button class="auth-toggle" type="button" id="signupConfirmToggle"
+                                aria-controls="signup-confirm" aria-pressed="false" aria-label="Toggle confirm password visibility">
+                                <svg class="auth-eye" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <svg class="auth-eye-slash" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="auth-error" id="signup-confirm-error" role="alert" hidden></p>
+                    </div>
+
+                    <!-- Custom Dropdown by div/span for Role -->
+                    <div class="auth-field">
+                        <label class="auth-label" id="roleSignupLabel">Select Role</label>
+                        <div class="auth-custom-select" id="customRoleSignupSelect" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="roleSignupLabel">
+                            <input type="hidden" name="role" id="signup-role" value="user" />
+                            <div class="auth-custom-select__trigger">
+                                <span class="auth-custom-select__value" id="customRoleSignupSelected">User</span>
+                                <svg class="auth-custom-select__caret" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M4 6l4 4 4-4" />
+                                </svg>
+                            </div>
+                            <div class="auth-custom-select__menu" role="listbox" aria-labelledby="roleSignupLabel">
+                                <div class="auth-custom-select__option is-selected" role="option" data-value="user" aria-selected="true" tabindex="0">
+                                    <span class="auth-custom-select__option-name">User</span>
+                                    <span class="auth-custom-select__option-desc">Opens the personal User workspace</span>
+                                </div>
+                                <div class="auth-custom-select__option" role="option" data-value="admin" aria-selected="false" tabindex="0">
+                                    <span class="auth-custom-select__option-name">Admin</span>
+                                    <span class="auth-custom-select__option-desc">Opens the Admin management console</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="auth-actions">
+                        <button class="btn btn--primary auth-submit" type="submit" id="signupSubmitBtn">
+                            Sign up <span class="btn__arrow" aria-hidden="true">→</span>
+                        </button>
+                    </div>
+
+                    <p class="auth-note">
+                        Upon completing sign up, you will be redirected to the login page.
+                    </p>
+
+                </form>
+
+                <p class="auth-switch">
+                    Already have an account? <a href="login.html">Log in</a>
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            var root = document.documentElement;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            var form = document.getElementById('signupForm');
+            var emailInput = document.getElementById('signup-email');
+            var pwInput = document.getElementById('signup-password');
+            var confirmInput = document.getElementById('signup-confirm');
+            var roleInput = document.getElementById('signup-role');
+
+            /* Clear inputs when user returns via browser Back button */
+            window.addEventListener('pageshow', function () {
+                if (form) form.reset();
+                if (emailInput) emailInput.value = '';
+                if (pwInput) pwInput.value = '';
+                if (confirmInput) confirmInput.value = '';
+            });
+
+            /* ---------------- Custom Dropdown (Role: User / Admin) ---------------- */
+            var customSelect = document.getElementById('customRoleSignupSelect');
+            var customSelectedSpan = document.getElementById('customRoleSignupSelected');
+            var options = customSelect ? customSelect.querySelectorAll('.auth-custom-select__option') : [];
+
+            if (customSelect) {
+                var toggleDropdown = function (expand) {
+                    var isOpen = typeof expand === 'boolean' ? expand : !customSelect.classList.contains('is-open');
+                    customSelect.classList.toggle('is-open', isOpen);
+                    customSelect.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                };
+
+                customSelect.querySelector('.auth-custom-select__trigger').addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    toggleDropdown();
+                });
+
+                customSelect.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleDropdown();
+                    } else if (e.key === 'Escape') {
+                        toggleDropdown(false);
+                    }
+                });
+
+                options.forEach(function (opt) {
+                    var selectOption = function () {
+                        var val = opt.getAttribute('data-value');
+                        roleInput.value = val;
+                        customSelectedSpan.textContent = val === 'admin' ? 'Admin' : 'User';
+
+                        options.forEach(function (o) {
+                            o.classList.remove('is-selected');
+                            o.setAttribute('aria-selected', 'false');
+                        });
+                        opt.classList.add('is-selected');
+                        opt.setAttribute('aria-selected', 'true');
+                        toggleDropdown(false);
+                        customSelect.focus();
+                    };
+
+                    opt.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        selectOption();
+                    });
+
+                    opt.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            selectOption();
+                        }
+                    });
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!customSelect.contains(e.target)) {
+                        toggleDropdown(false);
+                    }
+                });
+            }
+
+            /* ---------------- Password visibility toggles ---------------- */
+            function wireToggle(btnId, input) {
+                var btn = document.getElementById(btnId);
+                if (!btn || !input) return;
+                btn.addEventListener('click', function () {
+                    var isText = input.getAttribute('type') === 'text';
+                    input.setAttribute('type', isText ? 'password' : 'text');
+                    btn.setAttribute('aria-pressed', isText ? 'false' : 'true');
+                    var label = btn.querySelector('.auth-toggle__label');
+                    if (label) label.textContent = isText ? 'Show' : 'Hide';
+
+                    var len = input.value.length;
+                    input.focus();
+                    try { input.setSelectionRange(len, len); } catch (e) { /* ignore */ }
+                });
+            }
+
+            wireToggle('signupPwToggle', pwInput);
+            wireToggle('signupConfirmToggle', confirmInput);
+
+            /* ---------------- Validation ---------------- */
+            function setError(input, message) {
+                var el = document.getElementById(input.id + '-error');
+                if (!el) return;
+                if (message) {
+                    el.textContent = message;
+                    el.hidden = false;
+                    input.setAttribute('aria-invalid', 'true');
+                } else {
+                    el.textContent = '';
+                    el.hidden = true;
+                    input.removeAttribute('aria-invalid');
+                }
+            }
+
+            function validateEmail() {
+                var value = (emailInput.value || '').trim();
+                if (!value) {
+                    setError(emailInput, 'Please enter your email address.');
+                    return false;
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                    setError(emailInput, 'That doesn\'t look like a valid email address.');
+                    return false;
+                }
+                setError(emailInput, '');
+                return true;
+            }
+
+            function validatePassword() {
+                var value = pwInput.value || '';
+                if (!value) {
+                    setError(pwInput, 'Please choose a password.');
+                    return false;
+                }
+                if (value.length < 6) {
+                    setError(pwInput, 'Password must be at least 6 characters.');
+                    return false;
+                }
+                setError(pwInput, '');
+                return true;
+            }
+
+            function validateConfirm() {
+                var value = confirmInput.value || '';
+                if (!value) {
+                    setError(confirmInput, 'Please confirm your password.');
+                    return false;
+                }
+                if (value !== pwInput.value) {
+                    setError(confirmInput, 'The passwords don\'t match.');
+                    return false;
+                }
+                setError(confirmInput, '');
+                return true;
+            }
+
+            /* Live feedback */
+            [[emailInput, validateEmail], [pwInput, validatePassword], [confirmInput, validateConfirm]]
+                .forEach(function (pair) {
+                    var input = pair[0];
+                    var fn = pair[1];
+                    if (!input) return;
+                    input.addEventListener('blur', fn);
+                    input.addEventListener('input', function () {
+                        if (input.getAttribute('aria-invalid') === 'true') fn();
+                    });
+                });
+
+            /* ---------------- Submit & Redirect to login.html ---------------- */
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    var okEmail = validateEmail();
+                    var okPw = validatePassword();
+                    var okConfirm = validateConfirm();
+
+                    if (!okEmail || !okPw || !okConfirm) {
+                        var firstInvalid = !okEmail ? emailInput : (!okPw ? pwInput : confirmInput);
+                        if (firstInvalid) firstInvalid.focus();
+                        return;
+                    }
+
+                    /* Clear form */
+                    form.reset();
+                    if (emailInput) emailInput.value = '';
+                    if (pwInput) pwInput.value = '';
+                    if (confirmInput) confirmInput.value = '';
+
+                    /* Redirect to login.html */
+                    window.location.href = 'login.html';
+                });
+            }
+
+            /* ---------------- GSAP Animation ---------------- */
+            if (!window.gsap || reduceMotion) {
+                root.classList.remove('has-js');
+                return;
+            }
+
+            gsap.to('.auth-anim-left', {
+                x: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.1
+            });
+            gsap.to('.auth-anim-fade', {
+                opacity: 1, duration: 1.2, ease: 'power2.out'
+            });
+
+        })();
+    </script>
+
+</body>
+
+</html>

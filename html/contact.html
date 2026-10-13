@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact — Stackly</title>
+    <meta name="description"
+        content="Tell Stackly what you're working on and where it's getting stuck. We'll tell you honestly whether we're the right people to help." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" />
+
+    <link rel="stylesheet" href="../global.css" />
+    <link rel="stylesheet" href="../css/contact.css" />
+
+    <script>document.documentElement.classList.add('has-js');</script>
+</head>
+
+<body> 
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- =====================================================================
+     SHARED HEADER
+     ===================================================================== -->
+    <header class="site-header" id="siteHeader">
+        <div class="site-header__inner">
+
+            <a class="brand" href="../index.html" aria-label="Stackly — home">
+                <img class="brand__logo" src="../logo.webp" alt="Stackly" width="140" height="32" />
+            </a>
+
+            <nav class="primary-nav" aria-label="Primary">
+                <ul class="primary-nav__list">
+                    <li><a class="primary-nav__link" href="../index.html">Home</a></li>
+                    <li><a class="primary-nav__link" href="about.html">About</a></li>
+                    <li><a class="primary-nav__link" href="services.html">Services</a></li>
+                    <li><a class="primary-nav__link" href="blog.html">Blog</a></li>
+                    <li><a class="primary-nav__link" href="contact.html" aria-current="page">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a class="btn btn--ghost btn--sm" href="login.html">Login</a>
+                <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false"
+                    aria-controls="mobileMenu">
+                    <span class="menu-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+                    <span class="menu-toggle__label">Menu</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- =====================================================================
+     FULL-SCREEN MOBILE MENU
+     ===================================================================== -->
+    <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Site menu">
+        <div class="mobile-menu__top">
+            <a class="brand" href="../index.html" aria-label="Stackly — home">
+                <img class="brand__logo" src="../logo.webp" alt="Stackly" width="140" height="32" />
+            </a>
+            <button class="mobile-menu__close" id="menuClose" type="button">
+                <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+                    <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" fill="none"
+                        stroke-linecap="round" />
+                </svg>
+                Close
+            </button>
+        </div>
+
+        <div class="mobile-menu__body">
+            <nav aria-label="Mobile">
+                <ul class="mobile-menu__nav-list">
+                    <li><a class="mobile-menu__link" href="../index.html">Home</a></li>
+                    <li><a class="mobile-menu__link" href="about.html">About</a></li>
+                    <li><a class="mobile-menu__link" href="services.html">Services</a></li>
+                    <li><a class="mobile-menu__link" href="blog.html">Blog</a></li>
+                    <li><a class="mobile-menu__link" href="contact.html" aria-current="page">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="mobile-menu__aside">
+                <p class="mobile-menu__statement">Tell us what you're working on. We'll tell you honestly whether
+                    we're the right people to help.</p>
+                <a class="btn btn--primary" href="login.html">Login to Stackly <span class="btn__arrow"
+                        aria-hidden="true">→</span></a>
+                <p class="mobile-menu__meta">Early-stage · Product-led · Built in the open</p>
+            </div>
+        </div>
+
+        <div class="mobile-menu__footer">
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="blog.html">Field notes</a>
+        </div>
+    </div>
+
+    <main id="main">
+
+        <!-- ===================================================================
+       1 · HERO
+       =================================================================== -->
+        <section class="contact-hero" aria-labelledby="contact-hero-title">
+            <div class="contact-hero__bg" aria-hidden="true"></div>
+
+            <div class="container contact-hero__inner">
+
+                <div class="contact-hero__copy">
+                    <p class="eyebrow hero-anim">Contact</p>
+
+                    <h1 class="contact-hero__title hero-anim" id="contact-hero-title">
+                        Start with the problem, not the
+                        <em class="serif">pitch</em>.
+                    </h1>
+
+                    <p class="contact-hero__lede hero-anim">
+                        Tell us what you're working on and where it's getting stuck. We read every
+                        message ourselves, and we'll tell you honestly whether we're the right
+                        people to help.
+                    </p>
+
+                    <div class="contact-hero__actions hero-anim">
+                        <a class="btn btn--primary" href="services.html">
+                            See what we do <span class="btn__arrow" aria-hidden="true">→</span>
+                        </a>
+                        <a class="btn btn--secondary" href="about.html">
+                            More about us
+                        </a>
+                    </div>
+
+                    <dl class="contact-hero__meta hero-anim">
+                        <div>
+                            <dt>Who reads this</dt>
+                            <dd>The people doing the work</dd>
+                        </div>
+                        <div>
+                            <dt>What helps</dt>
+                            <dd>Specifics over summaries</dd>
+                        </div>
+                        <div>
+                            <dt>What happens next</dt>
+                            <dd>A short, honest reply</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div class="contact-hero__media hero-anim-media">
+                    <figure class="contact-hero__media-main">
+                        <img src="../asset/contact-hero-main.webp"
+                            alt="Two people in conversation at a table with a laptop open between them."
+                            width="1100" height="760" fetchpriority="high" decoding="async" />
+                    </figure>
+
+                    <figure class="contact-hero__media-inset">
+                        <img src="../asset/workspace-calm.webp"
+                            alt="A quiet desk with a notebook, coffee, and a phone showing a short list."
+                            width="520" height="520" loading="lazy" decoding="async" />
+                    </figure>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       2 · START A CONVERSATION (FORM)
+       =================================================================== -->
+        <section class="section section--light conversation" id="conversation" aria-labelledby="conversation-title">
+            <div class="container conversation__inner">
+
+                <div class="conversation__aside reveal-left">
+                    <p class="eyebrow">Start a Conversation</p>
+                    <h2 class="h2" id="conversation-title">Write to us directly.</h2>
+                    <p class="lede">
+                        A few honest paragraphs go a long way. You don't need a brief, a deck, or a
+                        polished summary — just enough context for us to understand what you're
+                        trying to do.
+                    </p>
+
+                    <ul class="conversation__points">
+                        <li class="conversation__point reveal-up">
+                            <h3 class="conversation__point-title">Read by a person</h3>
+                            <p class="body-sm">
+                                No routing, no ticket numbers. The people who'd do the work read
+                                what you send.
+                            </p>
+                        </li>
+                        <li class="conversation__point reveal-up">
+                            <h3 class="conversation__point-title">A reply either way</h3>
+                            <p class="body-sm">
+                                If we're not the right fit, we'll say so — and usually point you
+                                somewhere better.
+                            </p>
+                        </li>
+                        <li class="conversation__point reveal-up">
+                            <h3 class="conversation__point-title">Nothing shared</h3>
+                            <p class="body-sm">
+                                What you send stays between us. No case studies, no logos, no
+                                surprises.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="conversation__form-wrap reveal-right">
+                    <form class="contact-form" id="contactForm" action="404.html" novalidate>
+
+                        <div class="contact-form__row">
+                            <div class="form-field">
+                                <label class="form-label" for="name">
+                                    Your name <span class="form-required" aria-hidden="true">*</span>
+                                    <span class="visually-hidden">(required)</span>
+                                </label>
+                                <input class="form-input" type="text" id="name" name="name" autocomplete="name"
+                                    required aria-required="true" aria-describedby="name-error" />
+                                <p class="form-error" id="name-error" role="alert" hidden></p>
+                            </div>
+
+                            <div class="form-field">
+                                <label class="form-label" for="email">
+                                    Email <span class="form-required" aria-hidden="true">*</span>
+                                    <span class="visually-hidden">(required)</span>
+                                </label>
+                                <input class="form-input" type="email" id="email" name="email" autocomplete="email"
+                                    required aria-required="true" aria-describedby="email-error" />
+                                <p class="form-error" id="email-error" role="alert" hidden></p>
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label" for="topic">
+                                What's this about? <span class="form-required" aria-hidden="true">*</span>
+                                <span class="visually-hidden">(required)</span>
+                            </label>
+                            <select class="form-select" id="topic" name="topic" required aria-required="true"
+                                aria-describedby="topic-hint topic-error">
+                                <option value="">Choose a starting point</option>
+                                <option value="project">A project we might work on together</option>
+                                <option value="partnership">A partnership or collaboration</option>
+                                <option value="product">A question about the product</option>
+                                <option value="general">Something else entirely</option>
+                            </select>
+                            <p class="form-hint" id="topic-hint">Pick the closest match — you can add nuance below.</p>
+                            <p class="form-error" id="topic-error" role="alert" hidden></p>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label" for="message">
+                                What are you working on? <span class="form-required" aria-hidden="true">*</span>
+                                <span class="visually-hidden">(required)</span>
+                            </label>
+                            <textarea class="form-textarea" id="message" name="message" rows="7" required
+                                aria-required="true" aria-describedby="message-hint message-error"></textarea>
+                            <p class="form-hint" id="message-hint">
+                                What you're building, who it's for, and where it's getting stuck.
+                                Rough notes are fine.
+                            </p>
+                            <p class="form-error" id="message-error" role="alert" hidden></p>
+                        </div>
+
+                        <div class="contact-form__actions">
+                            <button class="btn btn--primary" type="submit">
+                                Send message <span class="btn__arrow" aria-hidden="true">→</span>
+                            </button>
+                            <p class="contact-form__note">
+                                This is a demonstration form. Nothing is sent or stored.
+                            </p>
+                        </div>
+
+                    </form>
+
+                    <div class="form-success" id="formSuccess" role="status" hidden>
+                        <p class="form-success__label">Demo submission received</p>
+                        <h3 class="form-success__title">Thanks — that's the whole form.</h3>
+                        <p class="body-sm">
+                            This is a front-end demonstration. No message was actually sent, and
+                            nothing you typed was stored or transmitted anywhere.
+                        </p>
+                        <p class="body-sm">
+                            In a real deployment, the next step would be a short written reply
+                            from one of the people who'd do the work.
+                        </p>
+                        <button class="btn btn--secondary btn--sm" type="button" id="formReset">
+                            Write another message
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       3 · WHAT TO TELL US
+       =================================================================== -->
+      
+
+        <!-- ===================================================================
+       4 · CHOOSE A STARTING POINT
+       =================================================================== -->
+        <section class="section section--dark starting" aria-labelledby="starting-title">
+            <div class="container">
+
+                <div class="starting__head reveal-left">
+                    <p class="eyebrow">Choose a Starting Point</p>
+                    <h2 class="h2" id="starting-title">Four ways people usually arrive.</h2>
+                    <p class="lede">
+                        You don't have to be sure which one fits. Pick the closest and we'll work
+                        out the rest in the first reply.
+                    </p>
+                </div>
+
+                <div class="starting__grid" data-reveal-group>
+
+                    <a class="starting__item" data-reveal-item href="404.html">
+                        <span class="starting__mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                <rect x="3.5" y="3.5" width="17" height="17" rx="2.5" />
+                                <path d="M8 12l3 3 5-6" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <h3 class="starting__item-title">Project work</h3>
+                        <p class="body-sm">
+                            You have a problem worth solving and want help framing, designing, or
+                            building the first version.
+                        </p>
+                        <span class="link-arrow">Start here <span aria-hidden="true">→</span></span>
+                    </a>
+
+                    <a class="starting__item" data-reveal-item href="404.html">
+                        <span class="starting__mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                <circle cx="9" cy="9" r="4.5" />
+                                <circle cx="16" cy="15" r="4.5" />
+                            </svg>
+                        </span>
+                        <h3 class="starting__item-title">Partnership</h3>
+                        <p class="body-sm">
+                            You work in an adjacent space and think there's something worth doing
+                            together.
+                        </p>
+                        <span class="link-arrow">Start here <span aria-hidden="true">→</span></span>
+                    </a>
+
+                    <a class="starting__item" data-reveal-item href="404.html">
+                        <span class="starting__mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                <circle cx="12" cy="12" r="7.5" />
+                                <path d="M12 8.5v4.5M12 15.5h.01" stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <h3 class="starting__item-title">Product question</h3>
+                        <p class="body-sm">
+                            You're using something we've built and want to ask about how it works
+                            or what's coming.
+                        </p>
+                        <span class="link-arrow">Start here <span aria-hidden="true">→</span></span>
+                    </a>
+
+                    <a class="starting__item" data-reveal-item href="404.html">
+                        <span class="starting__mark" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                <path d="M4 12h16M4 7h10M4 17h13" stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <h3 class="starting__item-title">General inquiry</h3>
+                        <p class="body-sm">
+                            Something else — a question, an introduction, or a note that doesn't
+                            fit anywhere else.
+                        </p>
+                        <span class="link-arrow">Start here <span aria-hidden="true">→</span></span>
+                    </a>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       5 · WHAT HAPPENS NEXT
+       =================================================================== -->
+        <section class="section section--light next" aria-labelledby="next-title">
+            <div class="container">
+
+                <div class="next__head reveal-right">
+                    <p class="eyebrow">What Happens Next</p>
+                    <h2 class="h2" id="next-title">A transparent process, not a guaranteed one.</h2>
+                    <p class="lede">
+                        We can't promise a specific outcome or a fixed timeline, but we can tell you
+                        exactly what we'll do with what you send.
+                    </p>
+                </div>
+
+                <ol class="next__track" data-reveal-group>
+
+                    <li class="next__step" data-reveal-item>
+                        <span class="next__rail" aria-hidden="true"><span class="next__dot"></span></span>
+                        <h3 class="next__step-title">A human reads it</h3>
+                        <p class="body-sm">
+                            Your message is read by one of the people who'd actually be involved
+                            in the work — not a triage system.
+                        </p>
+                    </li>
+
+                    <li class="next__step" data-reveal-item>
+                        <span class="next__rail" aria-hidden="true"><span class="next__dot"></span></span>
+                        <h3 class="next__step-title">We reply with a question or a no</h3>
+                        <p class="body-sm">
+                            Usually the reply is a clarifying question. Sometimes it's a straight
+                            answer that we're not the right fit.
+                        </p>
+                    </li>
+
+                    <li class="next__step" data-reveal-item>
+                        <span class="next__rail" aria-hidden="true"><span class="next__dot"></span></span>
+                        <h3 class="next__step-title">A short conversation</h3>
+                        <p class="body-sm">
+                            If there's something worth exploring, we'll suggest a short call to
+                            understand the problem properly.
+                        </p>
+                    </li>
+
+                    <li class="next__step" data-reveal-item>
+                        <span class="next__rail" aria-hidden="true"><span class="next__dot"></span></span>
+                        <h3 class="next__step-title">A written shape, if it fits</h3>
+                        <p class="body-sm">
+                            If it looks like a good match, we'll put the proposed engagement in
+                            writing — scope, approach, and what we wouldn't do.
+                        </p>
+                    </li>
+
+                </ol>
+
+                <p class="next__note reveal-up">
+                    <a class="link-arrow" href="404.html">
+                        More on how engagements start <span aria-hidden="true">→</span>
+                    </a>
+                </p>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       6 · A THOUGHTFUL FIRST MEETING
+       =================================================================== -->
+        <section class="section section--soft meeting" aria-labelledby="meeting-title">
+            <div class="container meeting__inner">
+
+                <div class="meeting__media reveal-image-left">
+                    <figure class="meeting__figure">
+                        <img src="../asset/experience-wide.webp"
+                            alt="A team of three in conversation around a laptop showing a workflow view."
+                            width="880" height="1080" loading="lazy" decoding="async" />
+                    </figure>
+
+                    <aside class="meeting__card">
+                        <p class="meeting__card-label">What we ask first</p>
+                        <p class="meeting__card-text serif">
+                            “What have you already tried, and why do you think it didn't work?”
+                        </p>
+                    </aside>
+                </div>
+
+                <div class="meeting__copy reveal-right">
+                    <p class="eyebrow">A Thoughtful First Meeting</p>
+                    <h2 class="h2" id="meeting-title">
+                        The first conversation is a working session, not a pitch.
+                    </h2>
+                    <p class="lede">
+                        We don't come with a deck. We come with questions. If we understand the
+                        problem properly, the useful next step usually becomes obvious to everyone
+                        in the room.
+                    </p>
+
+                    <ul class="meeting__list">
+                        <li class="meeting__item reveal-up">
+                            <h3 class="meeting__item-title">You do most of the talking</h3>
+                            <p class="body-sm">
+                                We're trying to understand your context, not sell you ours.
+                            </p>
+                        </li>
+                        <li class="meeting__item reveal-up">
+                            <h3 class="meeting__item-title">We'll say if it's not a fit</h3>
+                            <p class="body-sm">
+                                Early honesty saves everyone weeks. We're comfortable saying no.
+                            </p>
+                        </li>
+                        <li class="meeting__item reveal-up">
+                            <h3 class="meeting__item-title">You leave with something useful</h3>
+                            <p class="body-sm">
+                                Even if we don't work together, we'll share what we'd do in your
+                                position.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       7 · WHAT WE DON'T DO
+       =================================================================== -->
+        <section class="section section--dark dont" aria-labelledby="dont-title">
+            <div class="container">
+
+                <div class="dont__head reveal-left">
+                    <p class="eyebrow">What We Don't Do</p>
+                    <h2 class="h2" id="dont-title">Clear boundaries make better work.</h2>
+                    <p class="lede">
+                        Knowing what we won't take on is as useful as knowing what we will. It keeps
+                        the work honest and the promises small enough to keep.
+                    </p>
+                </div>
+
+                <div class="dont__grid">
+
+                    <figure class="dont__media reveal-image-left">
+                        <img src="../asset/behind-studio.webp"
+                            alt="A quiet studio corner with plants, notebooks, and warm afternoon light."
+                            width="900" height="1080" loading="lazy" decoding="async" />
+                    </figure>
+
+                    <ul class="dont__list" data-reveal-group>
+                        <li class="dont__item" data-reveal-item>
+                            <h3 class="dont__item-title">We don't take work we can't do well</h3>
+                            <p class="body-sm">
+                                If the problem is outside what we're genuinely good at, we'll say
+                                so rather than stretch.
+                            </p>
+                        </li>
+                        <li class="dont__item" data-reveal-item>
+                            <h3 class="dont__item-title">We don't run open-ended retainers</h3>
+                            <p class="body-sm">
+                                Ongoing work is welcome — but it needs a clear problem to be
+                                working on, not just hours to fill.
+                            </p>
+                        </li>
+                        <li class="dont__item" data-reveal-item>
+                            <h3 class="dont__item-title">We don't promise timelines before we understand</h3>
+                            <p class="body-sm">
+                                A date quoted without context is a guess dressed up as a
+                                commitment.
+                            </p>
+                        </li>
+                        <li class="dont__item" data-reveal-item>
+                            <h3 class="dont__item-title">We don't talk about client work publicly</h3>
+                            <p class="body-sm">
+                                No logos, no case studies, no details shared without explicit
+                                permission.
+                            </p>
+                        </li>
+                    </ul>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       8 · COMMON QUESTIONS
+       =================================================================== -->
+        <section class="section section--light faq" aria-labelledby="faq-title">
+            <div class="container faq__inner">
+
+                <div class="faq__head reveal-left">
+                    <p class="eyebrow">Common Questions</p>
+                    <h2 class="h2" id="faq-title">A few things worth asking early.</h2>
+                    <p class="lede">
+                        These come up often in a first exchange. If yours isn't here, ask it
+                        directly — we'd rather answer than leave it hanging.
+                    </p>
+                </div>
+
+                <div class="faq__list" data-faq>
+
+                    <div class="faq__item reveal-up">
+                        <h3 class="faq__question">
+                            <button class="faq__button" type="button" aria-expanded="false"
+                                aria-controls="faq-c1" id="faq-c1-btn">
+                                How soon should I expect a reply?
+                                <span class="faq__icon" aria-hidden="true"></span>
+                            </button>
+                        </h3>
+                        <div class="faq__panel" id="faq-c1" role="region" aria-labelledby="faq-c1-btn">
+                            <p class="body-sm">
+                                We don't publish a response time, because we'd rather reply
+                                properly than quickly. In practice, a short, specific message
+                                usually gets a short, specific reply — and a vague one tends to
+                                sit until we can ask a better question.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item reveal-up">
+                        <h3 class="faq__question">
+                            <button class="faq__button" type="button" aria-expanded="false"
+                                aria-controls="faq-c2" id="faq-c2-btn">
+                                Do I need a finished brief to get in touch?
+                                <span class="faq__icon" aria-hidden="true"></span>
+                            </button>
+                        </h3>
+                        <div class="faq__panel" id="faq-c2" role="region" aria-labelledby="faq-c2-btn">
+                            <p class="body-sm">
+                                No. Most useful first messages are rough. What matters is that
+                                we can understand the problem and who it's for — the rest can be
+                                worked out together.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item reveal-up">
+                        <h3 class="faq__question">
+                            <button class="faq__button" type="button" aria-expanded="false"
+                                aria-controls="faq-c3" id="faq-c3-btn">
+                                Can we talk before I know what I need?
+                                <span class="faq__icon" aria-hidden="true"></span>
+                            </button>
+                        </h3>
+                        <div class="faq__panel" id="faq-c3" role="region" aria-labelledby="faq-c3-btn">
+                            <p class="body-sm">
+                                Yes — that's often the most useful time to talk. A short
+                                conversation can save weeks of building the wrong thing
+                                confidently.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item reveal-up">
+                        <h3 class="faq__question">
+                            <button class="faq__button" type="button" aria-expanded="false"
+                                aria-controls="faq-c4" id="faq-c4-btn">
+                                What if you're not the right fit?
+                                <span class="faq__icon" aria-hidden="true"></span>
+                            </button>
+                        </h3>
+                        <div class="faq__panel" id="faq-c4" role="region" aria-labelledby="faq-c4-btn">
+                            <p class="body-sm">
+                                We'll say so, usually with a suggestion of where else to look.
+                                An honest no early is worth more than a slow maybe.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faq__item reveal-up">
+                        <h3 class="faq__question">
+                            <button class="faq__button" type="button" aria-expanded="false"
+                                aria-controls="faq-c5" id="faq-c5-btn">
+                                Will what I send stay private?
+                                <span class="faq__icon" aria-hidden="true"></span>
+                            </button>
+                        </h3>
+                        <div class="faq__panel" id="faq-c5" role="region" aria-labelledby="faq-c5-btn">
+                            <p class="body-sm">
+                                Yes. Nothing you send is shared, referenced publicly, or used as
+                                a case study without your explicit permission.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       9 · OUR APPROACH TO COMMUNICATION
+       =================================================================== -->
+        <section class="section section--soft communication" aria-labelledby="communication-title">
+            <div class="container communication__inner">
+
+                <div class="communication__copy reveal-left">
+                    <p class="eyebrow">Our Approach to Communication</p>
+                    <h2 class="h2" id="communication-title">A few expectations we set early.</h2>
+                    <p class="lede">
+                        Most frustration in working relationships comes from unspoken expectations.
+                        These are ours, stated plainly, so you can decide whether they match how
+                        you like to work.
+                    </p>
+
+                    <ul class="communication__list">
+                        <li class="communication__item reveal-up">
+                            <h3 class="communication__item-title">Written first</h3>
+                            <p class="body-sm">
+                                Decisions, questions, and context go in writing. It's slower to
+                                produce and much faster to rely on.
+                            </p>
+                        </li>
+                        <li class="communication__item reveal-up">
+                            <h3 class="communication__item-title">Direct, without ceremony</h3>
+                            <p class="body-sm">
+                                We say what we think, including when we're unsure. You don't need
+                                to read between the lines.
+                            </p>
+                        </li>
+                        <li class="communication__item reveal-up">
+                            <h3 class="communication__item-title">Regular, not noisy</h3>
+                            <p class="body-sm">
+                                Enough contact to stay aligned, not so much that it becomes the
+                                work itself.
+                            </p>
+                        </li>
+                        <li class="communication__item reveal-up">
+                            <h3 class="communication__item-title">Small enough to be honest</h3>
+                            <p class="body-sm">
+                                No account layer, no relayed messages. You talk to the people
+                                doing the work.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="communication__media reveal-image-right">
+                    <figure class="communication__figure">
+                        <img src="../asset/how-step-1.webp"
+                            alt="A person working quietly at a bright desk, focused on a clean interface."
+                            width="880" height="1100" loading="lazy" decoding="async" />
+                    </figure>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       10 · MORE ABOUT STACKLY
+       =================================================================== -->
+        <section class="section section--light more-about" aria-labelledby="more-about-title">
+            <div class="container">
+
+                <div class="more-about__head reveal-right">
+                    <p class="eyebrow">More About Stackly</p>
+                    <h2 class="h2" id="more-about-title">Who you'd actually be talking to.</h2>
+                    <p class="lede">
+                        A small, early-stage team building software we intend to keep improving.
+                        The people who read your message are the same people who'd do the work.
+                    </p>
+                </div>
+
+                <div class="more-about__grid">
+                    <figure class="more-about__item more-about__item--a reveal-image-left">
+                        <img src="../asset/values-collaboration.webp"
+                            alt="Two teammates talking through a decision at a shared desk." width="760"
+                            height="900" loading="lazy" decoding="async" />
+                        <figcaption class="more-about__caption">Close to the problem, always</figcaption>
+                    </figure>
+
+                    <figure class="more-about__item more-about__item--b reveal-up">
+                        <img src="../asset/people-team.webp"
+                            alt="A team member sketching interface flows on a whiteboard." width="760"
+                            height="900" loading="lazy" decoding="async" />
+                        <figcaption class="more-about__caption">Prototypes before arguments</figcaption>
+                    </figure>
+
+                    <figure class="more-about__item more-about__item--c reveal-image-right">
+                        <img src="../asset/value-studio.webp"
+                            alt="A wide view of an open studio with several people working at their desks."
+                            width="1300" height="620" loading="lazy" decoding="async" />
+                        <figcaption class="more-about__caption">Quiet space to think things through</figcaption>
+                    </figure>
+                </div>
+
+                <p class="more-about__note reveal-up">
+                    Illustrative imagery — representative of a small product team at work.
+                    <a class="link-arrow" href="404.html">
+                        Read our story <span aria-hidden="true">→</span>
+                    </a>
+                </p>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             STUDIO LOCATION & MAP — SALEM, TN, INDIA
+         =================================================================== -->
+        <section class="section section--dark studio-location" aria-labelledby="studio-location-title">
+            <div class="container studio-location__inner">
+
+                <div class="studio-location__info reveal-left">
+                    <p class="eyebrow">Our Studio</p>
+                    <h2 class="h2" id="studio-location-title">Building from Salem, Tamil Nadu.</h2>
+                    <p class="lede">
+                        Our engineering and design studio is based in Salem, Tamil Nadu, India.
+                        It is where we frame constraints, build interactive prototypes, and collaborate
+                        closely with growing product teams worldwide.
+                    </p>
+
+                    <div class="studio-location__address-card">
+                        <div class="studio-location__address-header">
+                            <span class="studio-location__pin-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <path d="M12 21c-4.5-5.5-7-9.5-7-13a7 7 0 1114 0c0 3.5-2.5 7.5-7 13z" />
+                                    <circle cx="12" cy="8" r="2.5" />
+                                </svg>
+                            </span>
+                            <div>
+                                <h3 class="studio-location__name">Stackly Studio</h3>
+                                <p class="studio-location__city">Salem, Tamil Nadu, India</p>
+                            </div>
+                        </div>
+
+                        <address class="studio-location__address">
+                            Stackly Technologies<br />
+                            Fairlands Main Road, Alagapuram<br />
+                            Salem, Tamil Nadu 636016<br />
+                            India
+                        </address>
+
+                        <dl class="studio-location__meta">
+                            <div>
+                                <dt>Coordinates</dt>
+                                <dd>11.6643° N, 78.1460° E</dd>
+                            </div>
+                            <div>
+                                <dt>Time Zone</dt>
+                                <dd>IST (UTC +05:30)</dd>
+                            </div>
+                            <div>
+                                <dt>Visiting</dt>
+                                <dd>By prior conversation</dd>
+                            </div>
+                            <div>
+                                <dt>Direct Channel</dt>
+                                <dd>hello@stackly.dev</dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <div class="studio-location__actions">
+                        <a class="btn btn--primary" href="404.html">
+                            Open in Google Maps <span class="btn__arrow" aria-hidden="true">→</span>
+                        </a>
+                        <a class="btn btn--secondary" href="404.html">
+                            Travel &amp; Arrival Notes
+                        </a>
+                    </div>
+                </div>
+
+                <div class="studio-location__map-wrap reveal-right">
+                    <div class="studio-location__map-frame">
+                        <iframe 
+                            class="studio-location__map-iframe"
+                            title="Stackly Salem Studio Map"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125032.5511394747!2d78.07727409999999!3d11.6643254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babf1ccf52cba0b%3A0xee9989007068ca47!2sSalem%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+
+                        <div class="studio-location__map-badge">
+                            <span class="studio-location__pulse" aria-hidden="true"></span>
+                            <div>
+                                <strong class="studio-location__badge-title">Stackly Studio</strong>
+                                <span class="studio-location__badge-sub">Salem, TN · India</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================
+       FINAL CTA
+       =================================================================== -->
+        <section class="section section--soft cta-final" aria-labelledby="cta-title">
+            <div class="container cta-final__inner">
+
+                <div class="cta-final__copy reveal-up">
+                    <p class="eyebrow">Still Reading?</p>
+                    <h2 class="cta-final__title" id="cta-title">
+                        If you've made it this far, you probably have something worth saying.
+                    </h2>
+                    <p class="cta-final__lede">
+                        Whether it's a project, a question, or just a note — we'd rather hear it
+                        than not. And if we're not the right fit, we'll usually know someone who
+                        is.
+                    </p>
+
+                    <div class="cta-final__actions">
+                        <a class="btn btn--primary" href="services.html">
+                            See our services <span class="btn__arrow" aria-hidden="true">→</span>
+                        </a>
+                        <a class="btn btn--secondary" href="../index.html">
+                            Back to home
+                        </a>
+                    </div>
+                </div>
+
+                <figure class="cta-final__media reveal-image-right">
+                    <img src="../asset/how-step-3.webp"
+                        alt="A small product team gathered around a table, reviewing a plan together."
+                        width="900" height="760" loading="lazy" decoding="async" />
+                </figure>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =====================================================================
+     SHARED FOOTER
+     ===================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+
+            <div class="footer__grid">
+
+                <div class="footer__brand">
+                    <a class="brand" href="../index.html" aria-label="Stackly — home">
+                        <img class="brand__logo" src="../logo.webp" alt="Stackly" width="140" height="32" />
+                    </a>
+                    <p class="footer__statement">
+                        A product-minded startup building calm, practical software for teams who
+                        would rather ship something real than describe something perfect.
+                    </p>
+                    <div class="footer__socials" aria-label="Social links">
+                        <a class="footer__social" href="404.html" aria-label="Stackly on X (Twitter)">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a class="footer__social" href="404.html" aria-label="Stackly on GitHub">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                            </svg>
+                        </a>
+                        <a class="footer__social" href="404.html" aria-label="Stackly on LinkedIn">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                            </svg>
+                        </a>
+                        <a class="footer__social" href="404.html" aria-label="Stackly on Discord">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <nav class="footer__col" aria-labelledby="footer-nav-title">
+                    <h2 class="footer__col-title" id="footer-nav-title">Navigation</h2>
+                    <ul class="footer__links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="footer__col">
+                    <h2 class="footer__col-title">Platform</h2>
+                    <ul class="footer__links">
+                        <li><a href="404.html">Overview</a></li>
+                        <li><a href="404.html">Workflows</a></li>
+                        <li><a href="404.html">Integrations</a></li>
+                        <li><a href="404.html">Releases</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__col">
+                    <h2 class="footer__col-title">Company</h2>
+                    <ul class="footer__links">
+                        <li><a href="404.html">Careers</a></li>
+                        <li><a href="404.html">Press</a></li>
+                        <li><a href="404.html">Support</a></li>
+                        <li><a href="404.html">Status</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__col">
+                    <h2 class="footer__col-title">Resources</h2>
+                    <ul class="footer__links">
+                        <li><a href="404.html">Documentation</a></li>
+                        <li><a href="404.html">Field notes</a></li>
+                        <li><a href="404.html">Changelog</a></li>
+                        <li><a href="404.html">Community</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer__bottom">
+                <p>© <span id="footerYear">2026</span> Stackly. All rights reserved.</p>
+                <div class="footer__legal">
+                    <a href="404.html">Privacy</a>
+                    <a href="404.html">Terms</a>
+                    <a href="404.html">Cookies</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            var root = document.documentElement;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            var yearEl = document.getElementById('footerYear');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+            /* Header scroll state */
+            var header = document.getElementById('siteHeader');
+            var lastKnown = -1;
+            function onScroll() {
+                var y = window.pageYOffset || document.documentElement.scrollTop;
+                var scrolled = y > 24;
+                if (scrolled !== lastKnown) {
+                    header.classList.toggle('is-scrolled', scrolled);
+                    lastKnown = scrolled;
+                }
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            /* Mobile menu */
+            var menu = document.getElementById('mobileMenu');
+            var toggle = document.getElementById('menuToggle');
+            var closeBtn = document.getElementById('menuClose');
+            var body = document.body;
+            var menuAnimating = false;
+
+            function openMenu() {
+                if (!menu || menuAnimating) return;
+                menuAnimating = true;
+                menu.classList.add('is-open');
+                toggle.setAttribute('aria-expanded', 'true');
+                body.classList.add('is-locked');
+
+                if (window.gsap && !reduceMotion) {
+                    gsap.fromTo(menu, { opacity: 0 },
+                        { opacity: 1, duration: 0.3, ease: 'power2.out', onComplete: function () { menuAnimating = false; } });
+                    gsap.fromTo(menu.querySelectorAll('.mobile-menu__link'),
+                        { opacity: 0, y: 22 },
+                        { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power3.out', delay: 0.06 });
+                    gsap.fromTo(menu.querySelector('.mobile-menu__aside'),
+                        { opacity: 0, y: 16 },
+                        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.18 });
+                } else {
+                    menuAnimating = false;
+                }
+                if (closeBtn) closeBtn.focus();
+            }
+
+            function closeMenu(restoreFocus) {
+                if (!menu || !menu.classList.contains('is-open')) return;
+                menu.classList.remove('is-open');
+                toggle.setAttribute('aria-expanded', 'false');
+                body.classList.remove('is-locked');
+                if (restoreFocus !== false && toggle) toggle.focus();
+            }
+
+            if (toggle) toggle.addEventListener('click', openMenu);
+            if (closeBtn) closeBtn.addEventListener('click', function () { closeMenu(true); });
+
+            if (menu) {
+                menu.addEventListener('click', function (e) {
+                    if (e.target.closest('a')) {
+                        body.classList.remove('is-locked');
+                        menu.classList.remove('is-open');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && menu && menu.classList.contains('is-open')) closeMenu(true);
+            });
+
+            /* FAQ accordion */
+            var faq = document.querySelector('[data-faq]');
+            if (faq) {
+                var buttons = faq.querySelectorAll('.faq__button');
+                buttons.forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var expanded = btn.getAttribute('aria-expanded') === 'true';
+                        var panel = document.getElementById(btn.getAttribute('aria-controls'));
+
+                        buttons.forEach(function (other) {
+                            if (other !== btn && other.getAttribute('aria-expanded') === 'true') {
+                                other.setAttribute('aria-expanded', 'false');
+                                var otherPanel = document.getElementById(other.getAttribute('aria-controls'));
+                                if (otherPanel) otherPanel.style.maxHeight = null;
+                            }
+                        });
+
+                        if (expanded) {
+                            btn.setAttribute('aria-expanded', 'false');
+                            if (panel) panel.style.maxHeight = null;
+                        } else {
+                            btn.setAttribute('aria-expanded', 'true');
+                            if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+                        }
+                    });
+                });
+            }
+
+            /* Contact form */
+            var form = document.getElementById('contactForm');
+            var success = document.getElementById('formSuccess');
+            var resetBtn = document.getElementById('formReset');
+
+            function setError(field, message) {
+                var errorEl = document.getElementById(field.id + '-error');
+                if (!errorEl) return;
+                if (message) {
+                    errorEl.textContent = message;
+                    errorEl.hidden = false;
+                    field.setAttribute('aria-invalid', 'true');
+                } else {
+                    errorEl.textContent = '';
+                    errorEl.hidden = true;
+                    field.removeAttribute('aria-invalid');
+                }
+            }
+
+            function validateField(field) {
+                var value = (field.value || '').trim();
+
+                if (field.hasAttribute('required') && !value) {
+                    setError(field, 'This field is required.');
+                    return false;
+                }
+
+                if (field.type === 'email' && value) {
+                    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                    if (!ok) {
+                        setError(field, 'Please enter a valid email address.');
+                        return false;
+                    }
+                }
+
+                if (field.id === 'message' && !value) {
+                    setError(field, 'This field is required.');
+                    return false;
+                }
+
+                setError(field, '');
+                return true;
+            }
+
+            function resetContactForm() {
+                if (!form) return;
+                form.reset();
+                var allFields = form.querySelectorAll('.form-input, .form-select, .form-textarea');
+                Array.prototype.forEach.call(allFields, function (field) {
+                    if (field.tagName === 'SELECT') {
+                        field.selectedIndex = 0;
+                    } else {
+                        field.value = '';
+                    }
+                    setError(field, '');
+                });
+                form.hidden = false;
+                if (success) success.hidden = true;
+            }
+
+            if (form) {
+                var fields = Array.prototype.slice.call(form.querySelectorAll('.form-input, .form-select, .form-textarea'));
+
+                fields.forEach(function (field) {
+                    field.addEventListener('blur', function () { validateField(field); });
+                    field.addEventListener('input', function () {
+                        if (field.getAttribute('aria-invalid') === 'true') validateField(field);
+                    });
+                });
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    var firstInvalid = null;
+                    fields.forEach(function (field) {
+                        var ok = validateField(field);
+                        if (!ok && !firstInvalid) firstInvalid = field;
+                    });
+
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        return;
+                    }
+
+                    /* Mark submission and save current scroll position so returning arrives at the exact same spot */
+                    try {
+                        sessionStorage.setItem('stackly_contact_submitted', 'true');
+                        var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                        sessionStorage.setItem('contact_scroll_pos', currentScroll.toString());
+                    } catch (err) {}
+
+                    /* Reset form inputs so history/bfcache does not retain previous text */
+                    resetContactForm();
+
+                    /* Move to 404 page */
+                    window.location.href = '404.html';
+                });
+            }
+
+            function restoreContactScroll() {
+                try {
+                    var saved = sessionStorage.getItem('contact_scroll_pos');
+                    if (saved !== null) {
+                        sessionStorage.removeItem('contact_scroll_pos');
+                        var y = parseInt(saved, 10);
+                        if (!isNaN(y) && y > 0) {
+                            window.scrollTo({ top: y, behavior: 'instant' });
+                            setTimeout(function () {
+                                window.scrollTo({ top: y, behavior: 'instant' });
+                            }, 50);
+                        }
+                    } else if (window.location.hash === '#conversation' || window.location.hash === '#contactForm') {
+                        var conv = document.getElementById('conversation');
+                        if (conv) {
+                            conv.scrollIntoView({ behavior: 'instant', block: 'start' });
+                        }
+                    }
+                } catch (err) {}
+            }
+
+            /* Refresh form and restore scroll position when navigating back (browser Back button or bfcache) */
+            window.addEventListener('pageshow', function () {
+                resetContactForm();
+                restoreContactScroll();
+            });
+
+            /* Clear form on initial load if returning from submission */
+            try {
+                if (sessionStorage.getItem('stackly_contact_submitted') === 'true') {
+                    sessionStorage.removeItem('stackly_contact_submitted');
+                    resetContactForm();
+                    restoreContactScroll();
+                }
+            } catch (err) {}
+
+            if (resetBtn && form && success) {
+                resetBtn.addEventListener('click', function () {
+                    resetContactForm();
+                    var first = form.querySelector('.form-input');
+                    if (first) first.focus();
+                });
+            }
+
+            /* GSAP */
+            if (!window.gsap || !window.ScrollTrigger) {
+                root.classList.remove('has-js');
+                return;
+            }
+            gsap.registerPlugin(ScrollTrigger);
+
+            if (reduceMotion) {
+                root.classList.remove('has-js');
+                return;
+            }
+
+            var EASE = 'power3.out';
+
+            function reveal(selector, fromVars, options) {
+                var els = gsap.utils.toArray(selector);
+                if (!els.length) return;
+                options = options || {};
+                els.forEach(function (el) {
+                    gsap.fromTo(el, fromVars, {
+                        x: 0, y: 0, opacity: 1, scale: 1,
+                        duration: options.duration || 0.85,
+                        ease: options.ease || EASE,
+                        delay: options.delay || 0,
+                        scrollTrigger: { trigger: el, start: options.start || 'top 88%', once: true }
+                    });
+                });
+            }
+
+            /* Hero entrance */
+            gsap.to('.hero-anim', { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out', stagger: 0.09, delay: 0.15 });
+            gsap.to('.hero-anim-media', { opacity: 1, x: 0, duration: 1.05, ease: 'power3.out', delay: 0.3 });
+
+            /* Directional section reveals */
+            reveal('.reveal-left', { x: -60, opacity: 0 });
+            reveal('.reveal-right', { x: 60, opacity: 0 });
+            reveal('.reveal-up', { y: 34, opacity: 0 }, { duration: 0.8 });
+            reveal('.reveal-image-left', { x: -48, opacity: 0 }, { duration: 0.95 });
+            reveal('.reveal-image-right', { x: 48, opacity: 0 }, { duration: 0.95 });
+
+            /* Grouped / staggered items */
+            gsap.utils.toArray('[data-reveal-group]').forEach(function (group) {
+                var items = gsap.utils.toArray(group.querySelectorAll('[data-reveal-item]'));
+                if (!items.length) return;
+                gsap.fromTo(items, { y: 34, opacity: 0 }, {
+                    y: 0, opacity: 1, duration: 0.8, ease: EASE, stagger: 0.1,
+                    scrollTrigger: { trigger: group, start: 'top 85%', once: true }
+                });
+            });
+
+            /* Restrained scale / clip reveals */
+            gsap.utils.toArray('.image-scale').forEach(function (el) {
+                gsap.fromTo(el, { scale: 1.06, opacity: 0 }, {
+                    scale: 1, opacity: 1, duration: 1.1, ease: 'power4.out',
+                    scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+                });
+            });
+
+            gsap.utils.toArray('.clip-reveal').forEach(function (el) {
+                gsap.fromTo(el, { clipPath: 'inset(0 0 100% 0)' }, {
+                    clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'power4.out',
+                    scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+                });
+            });
+
+            window.addEventListener('load', function () {
+                ScrollTrigger.refresh();
+                var openPanel = document.querySelector('.faq__button[aria-expanded="true"]');
+                if (openPanel) {
+                    var p = document.getElementById(openPanel.getAttribute('aria-controls'));
+                    if (p) p.style.maxHeight = p.scrollHeight + 'px';
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+
+</html>

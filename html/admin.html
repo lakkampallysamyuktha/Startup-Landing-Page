@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Governance Console — Stackly</title>
+    <meta name="description" content="Platform governance console for system health, workspaces, access security, and infrastructure." />
+    <meta name="robots" content="noindex" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" />
+
+    <link rel="stylesheet" href="../global.css" />
+
+    <!-- Chart.js CDN Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <style>
+        :root {
+            --brand-blue: #0A2947;
+            --brand-parchment: #F3E4C9;
+            --brand-mineral: #D3D4C0;
+            --brand-earth: #8B5E3C;
+            --surface-dark: #071D33;
+            --surface-light: #F3E4C9;
+            --surface-soft: #D3D4C0;
+            --sidebar-w: 280px;
+            --header-h: 70px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-sans);
+            background-color: #F4F6F0;
+            color: var(--brand-blue);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Prevent background scroll when sidebar drawer is open */
+        html.is-locked,
+        body.is-locked {
+            overflow: hidden !important;
+            height: 100% !important;
+            max-height: 100vh !important;
+            max-height: 100dvh !important;
+            touch-action: none;
+        }
+
+        /* -----------------------------------------------------------------
+           FIXED HEADER
+           ----------------------------------------------------------------- */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-h);
+            background: #0A2947;
+            color: #F3E4C9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(1rem, 2.5vw, 2rem);
+            z-index: 100;
+            border-bottom: 1px solid rgba(243, 228, 201, 0.15);
+            box-shadow: 0 4px 20px rgba(7, 29, 51, 0.25);
+        }
+
+        .topbar__left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .logo-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-decoration: none;
+            cursor: pointer;
+            gap: 2px;
+        }
+
+        .logo-wrap {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .logo-wrap .brand__logo {
+            height: 26px;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .role-chip {
+            display: inline-block;
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #F3E4C9;
+            background: var(--brand-earth);
+            padding: 0.15rem 0.48rem;
+            border-radius: 999px;
+            margin-top: 1px;
+            margin-left: 28px;
+            line-height: 1.2;
+            border: 1px solid rgba(243, 228, 201, 0.3);
+        }
+
+        .topbar__greeting {
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(243, 228, 201, 0.2);
+            padding-left: 1.25rem;
+        }
+
+        .greeting-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #F3E4C9;
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        .greeting-sub {
+            font-size: 0.76rem;
+            color: var(--brand-mineral);
+            margin: 0;
+            opacity: 0.85;
+        }
+
+        .topbar__right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: rgba(243, 228, 201, 0.08);
+            border: 1px solid rgba(243, 228, 201, 0.2);
+            padding: 0.35rem 0.85rem 0.35rem 0.45rem;
+            border-radius: 999px;
+            color: #F3E4C9;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .profile-pill:hover {
+            background: rgba(243, 228, 201, 0.14);
+            border-color: rgba(243, 228, 201, 0.35);
+        }
+
+        .profile-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--brand-earth);
+            color: #F3E4C9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            border: 1.5px solid #F3E4C9;
+        }
+
+        .profile-email {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #F3E4C9;
+        }
+
+        .menu-btn {
+            display: none;
+            background: rgba(243, 228, 201, 0.1);
+            border: 1px solid rgba(243, 228, 201, 0.25);
+            border-radius: 6px;
+            color: #F3E4C9;
+            padding: 0.5rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* -----------------------------------------------------------------
+           LAYOUT: SIDEBAR + MAIN CONTENT
+           ----------------------------------------------------------------- */
+        .dash-shell {
+            display: flex;
+            flex: 1;
+            min-height: calc(100vh - var(--header-h));
+            position: relative;
+            padding-top: var(--header-h);
+            padding-left: var(--sidebar-w);
+        }
+
+        .dash-sidebar {
+            width: var(--sidebar-w);
+            background: #0A2947;
+            border-right: 1px solid rgba(243, 228, 201, 0.12);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem 1rem 1.25rem;
+            position: fixed;
+            left: 0;
+            top: var(--header-h);
+            height: calc(100vh - var(--header-h));
+            overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 90;
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: rgba(243, 228, 201, 0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.22s ease;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+            flex-shrink: 0;
+        }
+
+        .nav-link:hover {
+            color: #F3E4C9;
+            background: rgba(243, 228, 201, 0.08);
+        }
+
+        .nav-link.is-active {
+            color: #0A2947;
+            background: var(--brand-parchment);
+            font-weight: 600;
+            border-color: var(--brand-parchment);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-link.is-active svg {
+            opacity: 1;
+            color: #0A2947;
+        }
+
+        /* Sidebar Footer: Profile Card + Logout */
+        .sidebar-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(243, 228, 201, 0.12);
+        }
+
+        .user-card {
+            background: rgba(243, 228, 201, 0.06);
+            border: 1px solid rgba(243, 228, 201, 0.14);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-card__avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--brand-earth);
+            color: #F3E4C9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            border: 2px solid var(--brand-mineral);
+        }
+
+        .user-card__info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .user-card__name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #F3E4C9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-card__email {
+            font-size: 0.74rem;
+            color: var(--brand-mineral);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0.85;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            width: 100%;
+            background: rgba(139, 94, 60, 0.2);
+            color: var(--brand-parchment);
+            border: 1px solid rgba(139, 94, 60, 0.4);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--brand-earth);
+            color: #F3E4C9;
+            border-color: var(--brand-earth);
+        }
+
+        /* -----------------------------------------------------------------
+           MAIN CONTENT AREA
+           ----------------------------------------------------------------- */
+        .dash-main {
+            flex: 1;
+            padding: clamp(1.5rem, 3vw, 2.75rem);
+            max-width: 1360px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .data-section {
+            display: none;
+            animation: fadeIn 0.35s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+
+        .data-section.is-active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(10, 41, 71, 0.1);
+            padding-bottom: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header__title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+            margin: 0 0 0.4rem;
+            color: var(--brand-blue);
+            line-height: 1.15;
+        }
+
+        .section-header__desc {
+            font-size: 0.95rem;
+            color: rgba(10, 41, 71, 0.72);
+            margin: 0;
+            max-width: 60ch;
+        }
+
+        /* Sub-sections Container (4-5 items per tab) */
+        .subsections-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Dashboard Cards & Content Blocks */
+        .sub-block {
+            background: #FFFFFF;
+            border: 1px solid rgba(10, 41, 71, 0.1);
+            border-radius: 12px;
+            padding: clamp(1.25rem, 2vw, 1.75rem);
+            box-shadow: 0 4px 20px rgba(10, 41, 71, 0.04);
+            transition: border-color 0.25s ease;
+        }
+
+        .sub-block:hover {
+            border-color: rgba(10, 41, 71, 0.22);
+        }
+
+        .sub-block__head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(10, 41, 71, 0.06);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .sub-block__title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sub-block__tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(10, 41, 71, 0.08);
+            color: var(--brand-blue);
+        }
+
+        /* KPI Metric Row */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .kpi-card {
+            background: #F7F9F3;
+            border: 1px solid rgba(10, 41, 71, 0.08);
+            border-radius: 8px;
+            padding: 1.1rem;
+        }
+
+        .kpi-card__label {
+            font-size: 0.78rem;
+            color: rgba(10, 41, 71, 0.65);
+            margin: 0 0 0.35rem;
+            font-weight: 500;
+        }
+
+        .kpi-card__value {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .kpi-card__delta {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2F6848;
+            margin-top: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Chart Wrappers & Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .chart-box {
+            background: #F8FAF4;
+            border: 1px solid rgba(10, 41, 71, 0.08);
+            border-radius: 10px;
+            padding: 1rem 1.15rem;
+            overflow: hidden;
+        }
+
+        .chart-box__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.65rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px dashed rgba(10, 41, 71, 0.08);
+        }
+
+        .chart-box__title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .chart-box__val {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--brand-earth);
+        }
+
+        .chart-canvas-wrap {
+            position: relative;
+            width: 100%;
+            height: 180px;
+        }
+
+        /* 404 Action Button */
+        .dash-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            padding: 0.55rem 1.1rem;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #F3E4C9;
+            background: var(--brand-blue);
+            border: 1px solid var(--brand-blue);
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.22s ease;
+        }
+
+        .dash-btn:hover {
+            background: var(--brand-earth);
+            border-color: var(--brand-earth);
+            color: #F3E4C9;
+            transform: translateY(-1px);
+        }
+
+        .dash-btn--secondary {
+            background: transparent;
+            color: var(--brand-blue);
+            border-color: rgba(10, 41, 71, 0.25);
+        }
+
+        .dash-btn--secondary:hover {
+            background: rgba(10, 41, 71, 0.06);
+            color: var(--brand-blue);
+            border-color: var(--brand-blue);
+        }
+
+        /* Item Tables & Fleet Rows */
+        .item-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            background: #F8FAF4;
+            border: 1px solid rgba(10, 41, 71, 0.08);
+            border-radius: 8px;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .item-row__info {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .item-row__status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2F6848;
+            flex-shrink: 0;
+        }
+
+        .item-row__title {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--brand-blue);
+            margin: 0;
+        }
+
+        .item-row__meta {
+            font-size: 0.78rem;
+            color: rgba(10, 41, 71, 0.6);
+            margin: 0;
+        }
+
+        .sidebar-mobile-header {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 1.15rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(243, 228, 201, 0.15);
+        }
+
+        .sidebar-mobile-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #F3E4C9;
+        }
+
+        .sidebar-close-btn {
+            background: rgba(243, 228, 201, 0.1);
+            border: 1px solid rgba(243, 228, 201, 0.2);
+            color: #F3E4C9;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-close-btn:hover {
+            background: var(--brand-earth);
+            color: #F3E4C9;
+            border-color: var(--brand-earth);
+        }
+
+        .sidebar-close-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* -----------------------------------------------------------------
+           MOBILE RESPONSIVENESS
+           ----------------------------------------------------------------- */
+        @media (max-width: 900px) {
+            .menu-btn {
+                display: inline-flex;
+            }
+
+            .dash-shell {
+                padding-left: 0;
+            }
+
+            .dash-sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                z-index: 1000;
+                transform: translateX(-100%);
+                box-shadow: none;
+                padding: 1.25rem 1.5rem 2rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior: contain;
+                touch-action: pan-y;
+            }
+
+            .dash-sidebar.is-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            /* Center menu items vertically & horizontally on mobile */
+            .dash-sidebar nav {
+                margin: auto 0;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .nav-list {
+                width: 100%;
+                max-width: 380px;
+                gap: 0.75rem;
+            }
+
+            .nav-link {
+                justify-content: center;
+                text-align: center;
+                font-size: 1.05rem;
+                padding: 0.95rem 1.25rem;
+            }
+
+            .sidebar-bottom {
+                width: 100%;
+                max-width: 380px;
+                margin: 0 auto;
+            }
+
+            .topbar__greeting {
+                display: none;
+            }
+
+            .dash-main {
+                padding: 1.25rem;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .profile-email {
+                display: none;
+            }
+
+            .profile-pill {
+                padding: 0.25rem;
+            }
+
+            .section-header__title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =====================================================================
+     FIXED TOPBAR
+     ===================================================================== -->
+    <header class="topbar">
+        <div class="topbar__left">
+            <button class="menu-btn" id="menuToggle" aria-label="Toggle navigation drawer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- 1 & 7: Top Left Logo redirects to reload admin.html & resets to first section; ADMIN role chip -->
+            <a class="logo-group" href="admin.html" id="topLogo" aria-label="Reload admin console and open first section">
+                <div class="logo-wrap">
+                    <img class="brand__logo" src="../logo.webp" alt="Stackly" width="130" height="26" />
+                </div>
+                <span class="role-chip">ADMIN</span>
+            </a>
+
+            <!-- 11: Top bar Greeting -->
+            <div class="topbar__greeting">
+                <h1 class="greeting-title">Hello, Marcus Vance</h1>
+                <p class="greeting-sub">Platform Operations Lead · Fleet Healthy</p>
+            </div>
+        </div>
+
+        <!-- 11: Right corner email profile pill -->
+        <div class="topbar__right">
+            <a href="404.html" class="profile-pill" title="View Admin Profile">
+                <div class="profile-avatar">MV</div>
+                <span class="profile-email">marcus.vance@stackly.dev</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- =====================================================================
+     SHELL: SIDEBAR + MAIN CONTENT
+     ===================================================================== -->
+    <div class="dash-shell">
+
+        <!-- 2: SIDEBAR WITH 5 DATA-SECTIONS & LOGOUT BUTTON -->
+        <aside class="dash-sidebar" id="dashSidebar">
+            <!-- Mobile Header with Logo & Close Button -->
+            <div class="sidebar-mobile-header">
+                <a class="logo-group" href="admin.html" id="sidebarLogo" aria-label="Reload admin console and open first section" style="gap: 0.6rem;">
+                    <div class="logo-wrap">
+                        <img class="brand__logo" src="../logo.webp" alt="Stackly" width="125" height="25" />
+                    </div>
+                    <span class="role-chip">ADMIN</span>
+                </a>
+                <button class="sidebar-close-btn" id="sidebarClose" aria-label="Close menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav aria-label="Admin Navigation">
+                <ul class="nav-list" id="sidebarNav">
+                    <li>
+                        <button class="nav-link is-active" data-target="adm-health">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                            <span>System Health &amp; Analytics</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link" data-target="adm-workspaces">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                            <span>Workspaces &amp; Tenancy</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link" data-target="adm-users">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span>User Access &amp; Seats</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link" data-target="adm-security">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <span>Security &amp; Audit Logs</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-link" data-target="adm-billing">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            <span>Billing &amp; Infrastructure</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <!-- 12: Card with user name + email just above logout -->
+                <div class="user-card">
+                    <div class="user-card__avatar">MV</div>
+                    <div class="user-card__info">
+                        <span class="user-card__name">Marcus Vance</span>
+                        <span class="user-card__email">marcus.vance@stackly.dev</span>
+                    </div>
+                </div>
+
+                <!-- 2 & 9: Logout button redirects to login.html -->
+                <a class="logout-btn" href="login.html">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN DASHBOARD CONTENT -->
+        <main class="dash-main">
+
+            <!-- ===============================================================
+             DATA-SECTION 1: SYSTEM HEALTH & ANALYTICS (5 Subsections)
+             =============================================================== -->
+            <section class="data-section is-active" id="adm-health">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">System Health &amp; Analytics</h2>
+                        <p class="section-header__desc">Real-time edge telemetry, API throughput, query latencies, and platform stability metrics.</p>
+                    </div>
+                    <!-- 10: Action button redirects to 404 -->
+                    <a class="dash-btn" href="404.html">Export Diagnostics Report</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 1.1: Platform Health Scorecards -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Global Telemetry Scorecards</h3>
+                            <span class="sub-block__tag">Real-Time Heartbeat</span>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">System Uptime</p>
+                                <p class="kpi-card__value">99.98%</p>
+                                <p class="kpi-card__delta">↑ Past 90 days verified</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Avg API Latency</p>
+                                <p class="kpi-card__value">18.4ms</p>
+                                <p class="kpi-card__delta">↓ 2.1ms faster this cycle</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Request Volume</p>
+                                <p class="kpi-card__value">1.42M</p>
+                                <p class="kpi-card__delta">↑ 12% peak headroom</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Active Workers</p>
+                                <p class="kpi-card__value">32 / 32</p>
+                                <p class="kpi-card__delta">All clusters balanced</p>
+                            </div>
+                        </div>
+                        <a class="dash-btn dash-btn--secondary" href="404.html">Inspect Edge Cluster Fleet →</a>
+                    </div>
+
+                    <!-- Subsection 1.2: Throughput Area Graph & Edge Latency Distribution Charts -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">API Throughput &amp; Edge Latency Telemetry</h3>
+                            <span class="sub-block__tag">24h Cluster Telemetry</span>
+                        </div>
+                        <div class="charts-grid">
+                            <!-- Chart 1: Compact API Throughput Curve (Chart.js) -->
+                            <div class="chart-box">
+                                <div class="chart-box__header">
+                                    <h4 class="chart-box__title">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0A2947" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                        Request Volume Curve
+                                    </h4>
+                                    <span class="chart-box__val">14.8M Req/day</span>
+                                </div>
+                                <div class="chart-canvas-wrap">
+                                    <canvas id="adminThroughputChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Chart 2: P99 Edge Latency by Region (Chart.js) -->
+                            <div class="chart-box">
+                                <div class="chart-box__header">
+                                    <h4 class="chart-box__title">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2.2"><rect x="3" y="12" width="4" height="9"></rect><rect x="10" y="7" width="4" height="14"></rect><rect x="17" y="3" width="4" height="18"></rect></svg>
+                                        P99 Edge Latency by Region
+                                    </h4>
+                                    <span class="chart-box__val">14ms Global Avg</span>
+                                </div>
+                                <div class="chart-canvas-wrap">
+                                    <canvas id="adminLatencyChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 1.3: Incident & Alert Log -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Incident Response &amp; Live Alerts</h3>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Manage Webhooks</a>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #2F6848;"></span>
+                                    <div>
+                                        <p class="item-row__title">EU-Central Database Auto-Failover Drill Passed</p>
+                                        <p class="item-row__meta">Resolved in 1.4s · Zero packet loss recorded</p>
+                                    </div>
+                                </div>
+                                <span style="font-size: 0.8rem; font-weight: 600; color: #2F6848;">Automated Pass</span>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #8B5E3C;"></span>
+                                    <div>
+                                        <p class="item-row__title">Rate Limit Warning: External Webhook Burst</p>
+                                        <p class="item-row__meta">Tenant #482 throttled safely to prevent cascading stalls</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Investigate</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 1.4: Node Fleet Regional Map -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Global Edge Node Status</h3>
+                            <span class="sub-block__tag">4 Regions Active</span>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">US-East (Virginia)</p>
+                                <p style="font-weight: 700; color: #0A2947;">12 Nodes · 100% Ok</p>
+                                <p style="font-size: 0.75rem; color: #2F6848;">Ping: 8ms avg</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">EU-West (Frankfurt)</p>
+                                <p style="font-weight: 700; color: #0A2947;">8 Nodes · 100% Ok</p>
+                                <p style="font-size: 0.75rem; color: #2F6848;">Ping: 12ms avg</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">AP-South (Singapore)</p>
+                                <p style="font-weight: 700; color: #0A2947;">6 Nodes · 100% Ok</p>
+                                <p style="font-size: 0.75rem; color: #2F6848;">Ping: 19ms avg</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">SA-East (São Paulo)</p>
+                                <p style="font-weight: 700; color: #0A2947;">6 Nodes · 100% Ok</p>
+                                <p style="font-size: 0.75rem; color: #2F6848;">Ping: 24ms avg</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 1.5: Maintenance Scheduling -->
+                    <div class="sub-block" style="background: #EAEFE5; border-color: var(--brand-mineral);">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Zero-Downtime Kernel Upgrade</h3>
+                            <a class="dash-btn" href="404.html">Schedule Maintenance Window</a>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75); margin: 0;">
+                            Rolling blue-green updates guarantee zero interruption for active customer sessions.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+             DATA-SECTION 2: WORKSPACES & TENANCY (4 Subsections)
+             =============================================================== -->
+            <section class="data-section" id="adm-workspaces">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">Workspaces &amp; Tenancy</h2>
+                        <p class="section-header__desc">Fleet-wide tenant partition monitoring, storage capacity, and isolation controls.</p>
+                    </div>
+                    <a class="dash-btn" href="404.html">Provision Tenant +</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 2.1: Tenant Fleet Roster -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Enterprise &amp; Early-Stage Tenants</h3>
+                            <span class="sub-block__tag">128 Dedicated Clusters</span>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">Acme Studio Labs (ID: acme-prod)</p>
+                                        <p class="item-row__meta">Tier: Enterprise Dedicated · 48 Seats · 340 GB Storage</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Inspect Isolation</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">Hyperflow Systems (ID: hflow-team)</p>
+                                        <p class="item-row__meta">Tier: Growth Collective · 24 Seats · 185 GB Storage</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Inspect Isolation</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">Vanguard Product Group (ID: vng-group)</p>
+                                        <p class="item-row__meta">Tier: Growth Collective · 18 Seats · 98 GB Storage</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Inspect Isolation</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 2.2: Storage Capacity Distribution Bar Chart -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Storage Volume by Tenant Tier (SVG Bar Chart)</h3>
+                            <span class="sub-block__tag">Terabytes Utilized</span>
+                        </div>
+                        <div class="chart-box">
+                            <svg class="chart-svg" viewBox="0 0 720 180" role="img" aria-label="Storage allocation bar chart">
+                                <g transform="translate(40, 20)">
+                                    <text x="0" y="20" font-size="12" font-weight="600" fill="#0A2947">Enterprise Dedicated</text>
+                                    <rect x="160" y="8" width="480" height="18" rx="4" fill="#0A2947" />
+                                    <text x="650" y="22" font-size="11" fill="#0A2947" font-weight="600">42 TB</text>
+                                    
+                                    <text x="0" y="60" font-size="12" font-weight="600" fill="#0A2947">Growth Shared</text>
+                                    <rect x="160" y="48" width="310" height="18" rx="4" fill="#8B5E3C" />
+                                    <text x="480" y="62" font-size="11" fill="#0A2947" font-weight="600">24 TB</text>
+                                    
+                                    <text x="0" y="100" font-size="12" font-weight="600" fill="#0A2947">Starter Cloud</text>
+                                    <rect x="160" y="88" width="140" height="18" rx="4" fill="#D3D4C0" stroke="#0A2947" stroke-width="1" />
+                                    <text x="310" y="102" font-size="11" fill="#0A2947" font-weight="600">11 TB</text>
+                                    
+                                    <text x="0" y="140" font-size="12" font-weight="600" fill="#0A2947">Cold Backups</text>
+                                    <rect x="160" y="128" width="80" height="18" rx="4" fill="#8B5E3C" opacity="0.6" />
+                                    <text x="250" y="142" font-size="11" fill="#0A2947" font-weight="600">6 TB</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 2.3: Tenant Data Isolation Guardrails -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Security Isolation &amp; Partition Health</h3>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Run Partition Scan</a>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">KMS Encryption</p>
+                                <p style="font-weight: 700; color: #0A2947;">AES-256 GCM</p>
+                                <p style="font-size: 0.75rem; color: #2F6848;">Zero unencrypted volumes</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Data Leak Prevention</p>
+                                <p style="font-weight: 700; color: #0A2947;">100% Compliant</p>
+                                <p style="font-size: 0.75rem; color: #2F6848;">Boundary checks active</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Snapshot Frequency</p>
+                                <p style="font-weight: 700; color: #0A2947;">Every 60 Minutes</p>
+                                <p style="font-size: 0.75rem; color: #2F6848;">Point-in-time recovery</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 2.4: Tenant Migration Tooling -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Tenant Data Portability &amp; Migrations</h3>
+                            <a class="dash-btn" href="404.html">Initiate Cluster Migration</a>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            Seamlessly move tenant volumes between regions with live bidirectional replication.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+             DATA-SECTION 3: USER ACCESS & SEATS (4 Subsections)
+             =============================================================== -->
+            <section class="data-section" id="adm-users">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">User Access &amp; Seats</h2>
+                        <p class="section-header__desc">Manage assigned administrative privileges, member invitations, and seat utilization.</p>
+                    </div>
+                    <a class="dash-btn" href="404.html">Invite Organization Admin +</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 3.1: Active Administrative Roster -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Active Privileged Operators</h3>
+                            <span class="sub-block__tag">5 Admins Assigned</span>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">Marcus Vance (Current Session)</p>
+                                        <p class="item-row__meta">marcus.vance@stackly.dev · Superadmin · Hardware 2FA Verified</p>
+                                    </div>
+                                </div>
+                                <span style="font-size: 0.78rem; font-weight: 600; color: #2F6848;">Active Now</span>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">Dr. Sarah Thornton</p>
+                                        <p class="item-row__meta">s.thornton@stackly.dev · Security Officer · Hardware 2FA Verified</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn dash-btn--secondary" href="404.html">Permissions</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #8B5E3C;"></span>
+                                    <div>
+                                        <p class="item-row__title">Julian Meyer</p>
+                                        <p class="item-row__meta">j.meyer@stackly.dev · Compliance Auditor · Read-Only Fleet</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn dash-btn--secondary" href="404.html">Permissions</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 3.2: Seat & Role Distribution (Donut Chart) -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Role Distribution Across 1,480 Seats (SVG Donut Chart)</h3>
+                            <span class="sub-block__tag">Governance Matrix</span>
+                        </div>
+                        <div class="chart-box" style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem;">
+                            <svg width="180" height="180" viewBox="0 0 100 100" role="img" aria-label="Donut chart showing role seat distribution">
+                                <circle cx="50" cy="50" r="38" fill="transparent" stroke="#0A2947" stroke-width="14" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" stroke="#8B5E3C" stroke-width="14"
+                                    stroke-dasharray="238.7" stroke-dashoffset="140" stroke-linecap="round"
+                                    transform="rotate(-90 50 50)" />
+                                <circle cx="50" cy="50" r="38" fill="transparent" stroke="#D3D4C0" stroke-width="14"
+                                    stroke-dasharray="238.7" stroke-dashoffset="200" stroke-linecap="round"
+                                    transform="rotate(60 50 50)" />
+                                <text x="50" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#0A2947">1,480</text>
+                            </svg>
+                            <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.88rem;">
+                                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                    <span style="width: 12px; height: 12px; border-radius: 3px; background: #0A2947;"></span>
+                                    <span><strong>62%</strong> Standard Builders (918 seats)</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                    <span style="width: 12px; height: 12px; border-radius: 3px; background: #8B5E3C;"></span>
+                                    <span><strong>28%</strong> Team Leads &amp; Reviewers (414 seats)</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                                    <span style="width: 12px; height: 12px; border-radius: 3px; background: #D3D4C0;"></span>
+                                    <span><strong>10%</strong> Tenant Admins &amp; Auditors (148 seats)</span>
+                                </div>
+                                <a class="dash-btn" href="404.html" style="margin-top: 0.5rem;">Audit Seat Licenses</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 3.3: Pending Invitations & Provisioning -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Pending Workspace Invitations</h3>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Resend Invites</a>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #8B5E3C;"></span>
+                                    <div>
+                                        <p class="item-row__title">lead-architect@vanguard.co</p>
+                                        <p class="item-row__meta">Invited 6h ago by Marcus Vance · Workspace: Vanguard Product Group</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn dash-btn--secondary" href="404.html">Revoke Invite</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 3.4: SSO & Directory Sync -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">SAML 2.0 &amp; Okta Directory Integrations</h3>
+                            <span class="sub-block__tag">SCIM Enabled</span>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            Automate onboarding and offboarding by syncing directly with corporate identity providers.
+                        </p>
+                        <a class="dash-btn" href="404.html">Configure Identity Federation</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+             DATA-SECTION 4: SECURITY & AUDIT LOGS (4 Subsections)
+             =============================================================== -->
+            <section class="data-section" id="adm-security">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">Security &amp; Audit Logs</h2>
+                        <p class="section-header__desc">Immutable cryptographic audit trail, authentication telemetry, and compliance monitoring.</p>
+                    </div>
+                    <a class="dash-btn" href="404.html">Download Tamper-Proof Audit +</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 4.1: Real-Time Event Audit Stream -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Cryptographic Event Stream</h3>
+                            <span class="sub-block__tag">SHA-256 Chained</span>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">WORKSPACE_ROLE_ELEVATED [Tenant: acme-prod]</p>
+                                        <p class="item-row__meta">User alex.morgan promoted to Stream Lead by marcus.vance · 14:22 UTC</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Verify Hash</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">KMS_ROTATION_COMPLETED [Global Cluster]</p>
+                                        <p class="item-row__meta">Automated envelope encryption key rotation passed · 12:00 UTC</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Verify Hash</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status" style="background: #2F6848;"></span>
+                                    <div>
+                                        <p class="item-row__title">MEMBER_DEVICE_REVOKED [Tenant: hflow-team]</p>
+                                        <p class="item-row__meta">Hardware token deactivated following lost device report · 09:14 UTC</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Verify Hash</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 4.2: Auth Anomaly Detection Graph -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Auth Challenge &amp; Geo-Anomaly Telemetry (SVG Chart)</h3>
+                            <span class="sub-block__tag">Continuous Monitor</span>
+                        </div>
+                        <div class="chart-box">
+                            <svg class="chart-svg" viewBox="0 0 700 120" role="img" aria-label="Anomaly risk trend graph">
+                                <line x1="40" y1="90" x2="660" y2="90" stroke="#0A2947" stroke-opacity="0.1" />
+                                <path d="M50 85 L 180 82 L 320 84 L 460 30 L 520 85 L 650 86" fill="none" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round" />
+                                <circle cx="460" cy="30" r="5" fill="#8B5E3C" stroke="#F3E4C9" stroke-width="2" />
+                                <text x="50" y="110" font-size="11" fill="#0A2947" opacity="0.6">Normal Range</text>
+                                <text x="430" y="110" font-size="11" fill="#8B5E3C" font-weight="700">Blocked IP Burst</text>
+                                <text x="600" y="110" font-size="11" fill="#0A2947" opacity="0.6">Baseline Safe</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 4.3: SOC2 & ISO 27001 Compliance Status -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Regulatory Controls Compliance Scorecard</h3>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">View Auditor Portal</a>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">SOC 2 Type II</p>
+                                <p style="font-weight: 700; color: #2F6848;">Continuous Pass</p>
+                                <p style="font-size: 0.75rem; color: #0A2947;">Audited by Prescient Security</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">ISO / IEC 27001</p>
+                                <p style="font-weight: 700; color: #2F6848;">Certified 2026</p>
+                                <p style="font-size: 0.75rem; color: #0A2947;">Information Security Core</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">GDPR / DPA</p>
+                                <p style="font-weight: 700; color: #2F6848;">100% Enforced</p>
+                                <p style="font-size: 0.75rem; color: #0A2947;">Zero cross-border leaks</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 4.4: Vulnerability Scanning Automation -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Automated Dependency &amp; Container Scan</h3>
+                            <a class="dash-btn" href="404.html">Trigger Nightly Scan</a>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            Nightly static analysis scans 100% of deployed container images for CVE disclosures.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+             DATA-SECTION 5: BILLING & INFRASTRUCTURE (4 Subsections)
+             =============================================================== -->
+            <section class="data-section" id="adm-billing">
+                <header class="section-header">
+                    <div>
+                        <h2 class="section-header__title">Billing &amp; Infrastructure</h2>
+                        <p class="section-header__desc">Compute consumption, monthly recurring revenue trajectory, and licensing invoices.</p>
+                    </div>
+                    <a class="dash-btn" href="404.html">Download Revenue Ledger</a>
+                </header>
+
+                <div class="subsections-grid">
+                    <!-- Subsection 5.1: Cloud Spend & MRR Scorecards -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Platform Economics Scorecards</h3>
+                            <span class="sub-block__tag">Monthly Summary</span>
+                        </div>
+                        <div class="kpi-row">
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Monthly Recurring (MRR)</p>
+                                <p class="kpi-card__value">$142,600</p>
+                                <p class="kpi-card__delta">↑ 18.2% month-over-month</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Gross Infrastructure Spend</p>
+                                <p class="kpi-card__value">$14,280</p>
+                                <p class="kpi-card__delta">90% gross margin efficiency</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Annual Run Rate (ARR)</p>
+                                <p class="kpi-card__value">$1.71M</p>
+                                <p class="kpi-card__delta">↑ Enterprise expansion</p>
+                            </div>
+                            <div class="kpi-card">
+                                <p class="kpi-card__label">Net Revenue Retention</p>
+                                <p class="kpi-card__value">124%</p>
+                                <p class="kpi-card__delta">Healthy organic seat growth</p>
+                            </div>
+                        </div>
+                        <a class="dash-btn dash-btn--secondary" href="404.html">Manage Stripe Billing Portal →</a>
+                    </div>
+
+                    <!-- Subsection 5.2: Growth Curve (SVG Line Chart) -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">MRR Trajectory &amp; Cohort Growth</h3>
+                            <span class="sub-block__tag">6-Month Trend</span>
+                        </div>
+                        <div class="chart-box">
+                            <svg class="chart-svg" viewBox="0 0 760 220" role="img" aria-label="MRR revenue trajectory curve">
+                                <defs>
+                                    <linearGradient id="admRevGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#2F6848" stop-opacity="0.3" />
+                                        <stop offset="100%" stop-color="#2F6848" stop-opacity="0.0" />
+                                    </linearGradient>
+                                </defs>
+                                <line x1="50" y1="30" x2="720" y2="30" stroke="#0A2947" stroke-opacity="0.08" stroke-dasharray="4" />
+                                <line x1="50" y1="80" x2="720" y2="80" stroke="#0A2947" stroke-opacity="0.08" stroke-dasharray="4" />
+                                <line x1="50" y1="130" x2="720" y2="130" stroke="#0A2947" stroke-opacity="0.08" stroke-dasharray="4" />
+                                <line x1="50" y1="180" x2="720" y2="180" stroke="#0A2947" stroke-opacity="0.15" />
+                                
+                                <path d="M60 170 Q 180 150 300 125 T 520 80 T 700 35 L 700 180 L 60 180 Z" fill="url(#admRevGrad)" />
+                                <path d="M60 170 Q 180 150 300 125 T 520 80 T 700 35" fill="none" stroke="#2F6848" stroke-width="3" stroke-linecap="round" />
+                                
+                                <circle cx="300" cy="125" r="5" fill="#0A2947" stroke="#F3E4C9" stroke-width="2" />
+                                <circle cx="520" cy="80" r="5" fill="#0A2947" stroke="#F3E4C9" stroke-width="2" />
+                                <circle cx="700" cy="35" r="6" fill="#2F6848" stroke="#F3E4C9" stroke-width="2" />
+
+                                <text x="60" y="200" font-size="11" fill="#0A2947" opacity="0.6">May ($82k)</text>
+                                <text x="300" y="200" font-size="11" fill="#0A2947" opacity="0.6">Jul ($108k)</text>
+                                <text x="520" y="200" font-size="11" fill="#0A2947" opacity="0.6">Sep ($128k)</text>
+                                <text x="660" y="200" font-size="11" fill="#0A2947" opacity="0.6">Oct ($142k)</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Subsection 5.3: Invoicing & Contract Pipeline -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Recent Commercial Invoices</h3>
+                            <a class="dash-btn dash-btn--secondary" href="404.html">Export Invoices CSV</a>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">INV-2026-089 — Acme Studio Labs</p>
+                                        <p class="item-row__meta">Annual Dedicated Cluster Plan · $48,000 · Paid via Wire</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Receipt PDF</a>
+                            </li>
+                            <li class="item-row">
+                                <div class="item-row__info">
+                                    <span class="item-row__status"></span>
+                                    <div>
+                                        <p class="item-row__title">INV-2026-088 — Hyperflow Systems</p>
+                                        <p class="item-row__meta">Growth Plan Expansion (24 seats) · $12,400 · Paid via ACH</p>
+                                    </div>
+                                </div>
+                                <a class="dash-btn" href="404.html">Receipt PDF</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Subsection 5.4: Cloud Compute Reserve Allocation -->
+                    <div class="sub-block">
+                        <div class="sub-block__head">
+                            <h3 class="sub-block__title">Reserved Instance Commitments</h3>
+                            <a class="dash-btn" href="404.html">Rebalance Instance Fleet</a>
+                        </div>
+                        <p style="font-size: 0.88rem; color: rgba(10, 41, 71, 0.75);">
+                            3-year convertible reserved instance coverage currently sits at 84%, providing predictable cost bounds.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- SCRIPT FOR TAB SWITCHING, DRAWER TOGGLE & RELOAD -->
+    <script>
+        (function () {
+            'use strict';
+
+            var navLinks = document.querySelectorAll('#sidebarNav .nav-link');
+            var sections = document.querySelectorAll('.data-section');
+            var sidebar = document.getElementById('dashSidebar');
+            var menuToggle = document.getElementById('menuToggle');
+            var topLogo = document.getElementById('topLogo');
+
+            function switchSection(targetId) {
+                sections.forEach(function (sec) {
+                    sec.classList.remove('is-active');
+                });
+                navLinks.forEach(function (btn) {
+                    btn.classList.remove('is-active');
+                });
+
+                var activeSec = document.getElementById(targetId);
+                if (activeSec) {
+                    activeSec.classList.add('is-active');
+                }
+
+                var activeBtn = document.querySelector('[data-target="' + targetId + '"]');
+                if (activeBtn) {
+                    activeBtn.classList.add('is-active');
+                }
+
+                // Close mobile drawer if open and restore scroll
+                closeSidebar();
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            var sidebarClose = document.getElementById('sidebarClose');
+
+            function openSidebar() {
+                if (sidebar) {
+                    sidebar.classList.add('is-open');
+                    document.documentElement.classList.add('is-locked');
+                    document.body.classList.add('is-locked');
+                    document.body.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = 'hidden';
+                    if (menuToggle) {
+                        menuToggle.setAttribute('aria-expanded', 'true');
+                    }
+                }
+            }
+
+            function closeSidebar() {
+                if (sidebar) {
+                    sidebar.classList.remove('is-open');
+                    document.documentElement.classList.remove('is-locked');
+                    document.body.classList.remove('is-locked');
+                    document.body.style.overflow = '';
+                    document.documentElement.style.overflow = '';
+                    if (menuToggle) {
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            }
+
+            // Prevent background touch scrolling when mobile drawer is open
+            document.addEventListener('touchmove', function (e) {
+                if (sidebar && sidebar.classList.contains('is-open')) {
+                    if (!sidebar.contains(e.target)) {
+                        e.preventDefault();
+                    }
+                }
+            }, { passive: false });
+
+            // Restore scroll if resized above mobile breakpoint
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 900 && sidebar && sidebar.classList.contains('is-open')) {
+                    closeSidebar();
+                }
+            });
+
+            navLinks.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var target = btn.getAttribute('data-target');
+                    if (target) {
+                        switchSection(target);
+                    }
+                });
+            });
+
+            // 1 & 7: Top Left Logo redirects to reload & opens first data-section
+            var sidebarLogo = document.getElementById('sidebarLogo');
+            function handleLogoClick(e) {
+                if (e) e.preventDefault();
+                closeSidebar();
+                switchSection('adm-health');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            if (topLogo) {
+                topLogo.addEventListener('click', handleLogoClick);
+            }
+            if (sidebarLogo) {
+                sidebarLogo.addEventListener('click', handleLogoClick);
+            }
+
+            // Mobile menu drawer toggle
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function () {
+                    if (sidebar && sidebar.classList.contains('is-open')) {
+                        closeSidebar();
+                    } else {
+                        openSidebar();
+                    }
+                });
+            }
+
+            // Mobile close button
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function () {
+                    closeSidebar();
+                });
+            }
+
+            // Close sidebar when pressing Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && sidebar && sidebar.classList.contains('is-open')) {
+                    closeSidebar();
+                }
+            });
+
+            // Retrieve email and username from sessionStorage (set during login)
+            try {
+                var storedEmail = sessionStorage.getItem('stackly_user_email');
+                var storedName = sessionStorage.getItem('stackly_user_name');
+                if (storedEmail || storedName) {
+                    var greetingTitle = document.querySelector('.greeting-title');
+                    if (greetingTitle && storedName) {
+                        greetingTitle.textContent = 'Hello, ' + storedName;
+                    }
+                    var profileEmailEl = document.querySelector('.profile-email');
+                    if (profileEmailEl && storedEmail) {
+                        profileEmailEl.textContent = storedEmail;
+                    }
+                    var profileAvatarEl = document.querySelector('.profile-avatar');
+                    if (profileAvatarEl && storedName) {
+                        profileAvatarEl.textContent = storedName.substring(0, 2).toUpperCase();
+                    }
+                    var userCardName = document.querySelector('.user-card__name');
+                    if (userCardName && storedName) {
+                        userCardName.textContent = storedName;
+                    }
+                    var userCardEmail = document.querySelector('.user-card__email');
+                    if (userCardEmail && storedEmail) {
+                        userCardEmail.textContent = storedEmail;
+                    }
+                    var userCardAvatar = document.querySelector('.user-card__avatar');
+                    if (userCardAvatar && storedName) {
+                        userCardAvatar.textContent = storedName.substring(0, 2).toUpperCase();
+                    }
+                }
+            } catch (err) { /* storage fallback */ }
+
+            // -------------------------------------------------------------
+            // Chart.js Interactive Charts Setup (Admin Dashboard)
+            // -------------------------------------------------------------
+            if (typeof Chart !== 'undefined') {
+                Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+                Chart.defaults.color = '#0A2947';
+
+                // Chart 1: Request Volume Curve (Chart.js Spline Area)
+                var throughputCtx = document.getElementById('adminThroughputChart');
+                if (throughputCtx) {
+                    new Chart(throughputCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                            datasets: [{
+                                label: 'Request Volume (Req/s)',
+                                data: [3200, 4800, 9200, 11400, 10200, 14200, 15800],
+                                borderColor: '#0A2947',
+                                backgroundColor: function(context) {
+                                    var chart = context.chart;
+                                    var ctx = chart.ctx;
+                                    var gradient = ctx.createLinearGradient(0, 0, 0, 150);
+                                    gradient.addColorStop(0, 'rgba(10, 41, 71, 0.38)');
+                                    gradient.addColorStop(1, 'rgba(10, 41, 71, 0.0)');
+                                    return gradient;
+                                },
+                                fill: true,
+                                tension: 0.38,
+                                borderWidth: 2.4,
+                                pointBackgroundColor: '#8B5E3C',
+                                pointBorderColor: '#F3E4C9',
+                                pointBorderWidth: 2,
+                                pointRadius: 4.5,
+                                pointHoverRadius: 6.5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0A2947',
+                                    titleColor: '#F3E4C9',
+                                    bodyColor: '#F3E4C9',
+                                    padding: 8,
+                                    cornerRadius: 6,
+                                    callbacks: {
+                                        label: function(item) {
+                                            return item.parsed.y.toLocaleString() + ' req/sec';
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 10 }, color: 'rgba(10, 41, 71, 0.65)' }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(10, 41, 71, 0.06)' },
+                                    ticks: {
+                                        stepSize: 5000,
+                                        font: { size: 10 },
+                                        color: 'rgba(10, 41, 71, 0.55)',
+                                        callback: function(v) { return (v / 1000) + 'k'; }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Chart 2: P99 Edge Latency by Region (Chart.js Bar Chart)
+                var latencyCtx = document.getElementById('adminLatencyChart');
+                if (latencyCtx) {
+                    new Chart(latencyCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['US-East', 'US-West', 'EU-Cent', 'AP-East', 'SA-East'],
+                            datasets: [{
+                                label: 'P99 Latency (ms)',
+                                data: [8, 11, 14, 19, 24],
+                                backgroundColor: [
+                                    '#0A2947',
+                                    'rgba(10, 41, 71, 0.85)',
+                                    '#8B5E3C',
+                                    'rgba(139, 94, 60, 0.85)',
+                                    '#D3D4C0'
+                                ],
+                                borderColor: [
+                                    '#0A2947',
+                                    '#0A2947',
+                                    '#8B5E3C',
+                                    '#8B5E3C',
+                                    '#0A2947'
+                                ],
+                                borderWidth: 1,
+                                borderRadius: 4,
+                                barPercentage: 0.55
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0A2947',
+                                    titleColor: '#F3E4C9',
+                                    bodyColor: '#F3E4C9',
+                                    padding: 8,
+                                    cornerRadius: 6,
+                                    callbacks: {
+                                        label: function(item) {
+                                            return item.parsed.y + ' ms ping';
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 10 }, color: 'rgba(10, 41, 71, 0.65)' }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(10, 41, 71, 0.06)' },
+                                    ticks: {
+                                        stepSize: 6,
+                                        font: { size: 10 },
+                                        color: 'rgba(10, 41, 71, 0.55)',
+                                        callback: function(v) { return v + 'ms'; }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>

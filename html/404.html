@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page not found — Stackly</title>
+    <meta name="description"
+        content="This path has run its course. The page you were looking for isn't here, but there are a few good places to go next." />
+    <meta name="robots" content="noindex" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" />
+
+    <link rel="stylesheet" href="../global.css" />
+
+    <style>
+        /* ------------------------------------------------------------------
+           404 — page-scoped styles only. Shared tokens & components live in
+           global.css. This file intentionally has no separate CSS file since
+           it is a single, self-contained view.
+           ------------------------------------------------------------------ */
+
+        .not-found {
+            position: relative;
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            padding-top: calc(var(--header-h) + clamp(1rem, 2.5vw, 2.5rem));
+            padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+            background-color: var(--blue-deep);
+            color: var(--on-dark);
+            overflow: hidden;
+        }
+
+        .not-found__bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(120% 85% at 82% 15%, rgba(139, 94, 60, 0.26) 0%, transparent 58%),
+                radial-gradient(90% 70% at 8% 92%, rgba(20, 64, 108, 0.58) 0%, transparent 62%),
+                linear-gradient(190deg, var(--brand-blue) 0%, var(--blue-deep) 100%);
+        }
+
+        .not-found__bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(243, 228, 201, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(243, 228, 201, 0.05) 1px, transparent 1px);
+            background-size: 92px 92px;
+            mask-image: radial-gradient(75% 65% at 50% 45%, #000 0%, transparent 92%);
+            -webkit-mask-image: radial-gradient(75% 65% at 50% 45%, #000 0%, transparent 92%);
+        }
+
+        .not-found__inner {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+            gap: clamp(2rem, 4vw, 4rem);
+            align-items: center;
+        }
+
+        .not-found__copy {
+            max-width: 48ch;
+        }
+
+        .not-found .eyebrow {
+            color: var(--mineral-deep);
+            margin-bottom: 0.5rem;
+        }
+
+        .not-found__code {
+            display: inline-block;
+            margin: 0 0 0.5rem;
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 1.8rem + 4vw, 5rem);
+            font-weight: 500;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            color: var(--brand-earth);
+        }
+
+        .not-found__title {
+            margin: 0 0 0.9rem;
+            font-size: clamp(1.8rem, 1.2rem + 2.5vw, 3rem);
+            line-height: 1.08;
+            letter-spacing: -0.032em;
+            color: var(--on-dark);
+        }
+
+        .not-found__title em {
+            font-style: normal;
+            color: var(--brand-earth);
+            position: relative;
+            display: inline-block;
+        }
+
+        .not-found__title em::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -0.06em;
+            height: 2px;
+            background-color: var(--brand-earth);
+            opacity: 0.5;
+        }
+
+        .not-found__lede {
+            font-size: clamp(0.98rem, 0.94rem + 0.3vw, 1.12rem);
+            line-height: 1.55;
+            color: var(--on-dark-80);
+            max-width: 50ch;
+            margin-bottom: 1.35rem;
+        }
+
+        .not-found__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.85rem;
+            margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+        }
+
+        .not-found .btn--secondary {
+            color: var(--on-dark);
+            border-color: var(--line-dark-strong);
+            background-color: transparent;
+        }
+
+        .not-found .btn--secondary:hover {
+            background-color: var(--brand-parchment);
+            color: var(--brand-blue);
+            border-color: var(--brand-parchment);
+        }
+
+        .not-found__links {
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--line-dark);
+        }
+
+        .not-found__links-label {
+            margin: 0 0 0.9rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--on-dark-60);
+        }
+
+        .not-found__link-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 0.75rem;
+        }
+
+        .not-found__link-list a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1rem;
+            border: 1px solid var(--line-dark-strong);
+            border-radius: var(--radius-xs);
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--on-dark-80);
+            transition: background-color var(--dur) var(--ease-out),
+                        color var(--dur) var(--ease-out),
+                        border-color var(--dur) var(--ease-out),
+                        transform var(--dur) var(--ease-out);
+        }
+
+        .not-found__link-list a:hover {
+            background-color: var(--brand-parchment);
+            color: var(--brand-blue);
+            border-color: var(--brand-parchment);
+            transform: translateY(-2px);
+        }
+
+        /* Illustration ---------------------------------------------------- */
+        .not-found__media {
+            position: relative;
+            width: 100%;
+            max-width: 490px;
+            justify-self: end;
+            margin-top: -2.5rem;
+        }
+
+        .not-found__illustration {
+            margin: 0;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.6);
+            background-color: var(--brand-parchment);
+        }
+
+        .not-found__illustration svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .not-found__badge {
+            position: absolute;
+            left: -4%;
+            bottom: -2%;
+            padding: 0.95rem 1.25rem;
+            background-color: var(--brand-earth);
+            color: var(--brand-parchment);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.65);
+            max-width: 230px;
+        }
+
+        .not-found__badge-label {
+            margin: 0 0 0.35rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(243, 228, 201, 0.72);
+        }
+
+        .not-found__badge-text {
+            margin: 0;
+            font-family: var(--font-serif);
+            font-size: 0.98rem;
+            line-height: 1.4;
+            color: var(--brand-parchment);
+        }
+
+        /* Directional entrance helpers, gated on has-js to match global - */
+        .has-js .nf-left { opacity: 0; transform: translateX(-40px); }
+        .has-js .nf-right { opacity: 0; transform: translateX(44px); }
+        .has-js .nf-up { opacity: 0; transform: translateY(26px); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .has-js .nf-left,
+            .has-js .nf-right,
+            .has-js .nf-up {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
+        /* Responsive ------------------------------------------------------ */
+        @media (max-width: 1080px) {
+            .not-found__inner {
+                grid-template-columns: 1fr;
+            }
+
+            .not-found {
+                min-height: auto;
+                padding-top: calc(var(--header-h) + 3rem);
+            }
+
+            .not-found__media {
+                justify-self: start;
+                max-width: 520px;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .not-found__badge {
+                position: static;
+                max-width: none;
+                margin-top: 1rem;
+                box-shadow: none;
+            }
+
+            .not-found__link-list {
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 460px) {
+            .not-found__actions .btn {
+                width: 100%;
+            }
+
+            .not-found__link-list a {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+
+    <script>document.documentElement.classList.add('has-js');</script>
+</head>
+
+<body>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- =====================================================================
+     SHARED HEADER
+     ===================================================================== -->
+    <header class="site-header" id="siteHeader">
+        <div class="site-header__inner">
+
+            <a class="brand" href="../index.html" aria-label="Stackly — home">
+                <img class="brand__logo" src="../logo.webp" alt="Stackly" width="140" height="32" />
+            </a>
+
+            <nav class="primary-nav" aria-label="Primary">
+                <ul class="primary-nav__list">
+                    <li><a class="primary-nav__link" href="../index.html">Home</a></li>
+                    <li><a class="primary-nav__link" href="about.html">About</a></li>
+                    <li><a class="primary-nav__link" href="services.html">Services</a></li>
+                    <li><a class="primary-nav__link" href="blog.html">Blog</a></li>
+                    <li><a class="primary-nav__link" href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a class="btn btn--ghost btn--sm" href="login.html">Login</a>
+                <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false"
+                    aria-controls="mobileMenu">
+                    <span class="menu-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+                    <span class="menu-toggle__label">Menu</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- =====================================================================
+     FULL-SCREEN MOBILE MENU
+     ===================================================================== -->
+    <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Site menu">
+        <div class="mobile-menu__top">
+            <a class="brand" href="../index.html" aria-label="Stackly — home">
+                <img class="brand__logo" src="../logo.webp" alt="Stackly" width="140" height="32" />
+            </a>
+            <button class="mobile-menu__close" id="menuClose" type="button">
+                <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+                    <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" fill="none"
+                        stroke-linecap="round" />
+                </svg>
+                Close
+            </button>
+        </div>
+
+        <div class="mobile-menu__body">
+            <nav aria-label="Mobile">
+                <ul class="mobile-menu__nav-list">
+                    <li><a class="mobile-menu__link" href="../index.html">Home</a></li>
+                    <li><a class="mobile-menu__link" href="about.html">About</a></li>
+                    <li><a class="mobile-menu__link" href="services.html">Services</a></li>
+                    <li><a class="mobile-menu__link" href="blog.html">Blog</a></li>
+                    <li><a class="mobile-menu__link" href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="mobile-menu__aside">
+                <p class="mobile-menu__statement">Every wrong turn is a chance to look around. Here's the way
+                    back.</p>
+                <a class="btn btn--primary" href="login.html">Login to Stackly <span class="btn__arrow"
+                        aria-hidden="true">→</span></a>
+                <p class="mobile-menu__meta">Early-stage · Product-led · Built in the open</p>
+            </div>
+        </div>
+
+        <div class="mobile-menu__footer">
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+
+    <main id="main">
+
+        <!-- ===================================================================
+       404 · NOT FOUND
+       =================================================================== -->
+        <section class="not-found" aria-labelledby="not-found-title">
+            <div class="not-found__bg" aria-hidden="true"></div>
+
+            <div class="container not-found__inner">
+
+                <div class="not-found__copy">
+                    <p class="eyebrow nf-left">Page not found</p>
+
+                    <p class="not-found__code nf-left" aria-hidden="true">404</p>
+
+                    <h1 class="not-found__title nf-up" id="not-found-title">
+                        This path has <em class="serif">run its course</em>.
+                    </h1>
+
+                    <p class="not-found__lede nf-up">
+                        The page you were looking for isn't here — it may have moved, been
+                        renamed, or never existed in the first place. Nothing is broken; you've
+                        just arrived at a room we haven't built yet.
+                    </p>
+
+                    <div class="not-found__actions nf-up">
+                        <button type="button" class="btn btn--primary" id="goBackBtn">
+                            <span class="btn__arrow" aria-hidden="true">←</span> Go back
+                        </button>
+                        <a class="btn btn--secondary" href="../index.html">
+                            Back to home <span class="btn__arrow" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+
+                    <div class="not-found__links nf-up">
+                        <p class="not-found__links-label" id="nf-links-label">Or head somewhere useful</p>
+                        <nav class="not-found__link-list" aria-labelledby="nf-links-label">
+                            <a href="about.html">About Stackly <span aria-hidden="true">→</span></a>
+                            <a href="services.html">Services <span aria-hidden="true">→</span></a>
+                            <a href="blog.html">Field notes <span aria-hidden="true">→</span></a>
+                            <a href="contact.html">Contact <span aria-hidden="true">→</span></a>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="not-found__media nf-right">
+                    <figure class="not-found__illustration">
+                        <svg viewBox="0 0 560 520" role="img"
+                            aria-label="Illustration of a winding path that fades into an open, unmarked field.">
+                            <defs>
+                                <linearGradient id="nfSky" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#F3E4C9" />
+                                    <stop offset="100%" stop-color="#D3D4C0" />
+                                </linearGradient>
+                                <linearGradient id="nfPath" x1="0" y1="1" x2="1" y2="0">
+                                    <stop offset="0%" stop-color="#8B5E3C" />
+                                    <stop offset="100%" stop-color="#8B5E3C" stop-opacity="0" />
+                                </linearGradient>
+                                <radialGradient id="nfGlow" cx="50%" cy="30%" r="70%">
+                                    <stop offset="0%" stop-color="#8B5E3C" stop-opacity="0.22" />
+                                    <stop offset="100%" stop-color="#8B5E3C" stop-opacity="0" />
+                                </radialGradient>
+                            </defs>
+
+                            <rect x="0" y="0" width="560" height="520" fill="url(#nfSky)" />
+
+                            <!-- Distant hills -->
+                            <path d="M0 330 C 90 288, 168 300, 240 322 C 320 346, 420 300, 560 320 L560 520 L0 520 Z"
+                                fill="#D3D4C0" opacity="0.65" />
+                            <path d="M0 372 C 110 340, 200 356, 280 372 C 380 392, 470 366, 560 380 L560 520 L0 520 Z"
+                                fill="#BFC0AC" opacity="0.7" />
+
+                            <!-- Glow -->
+                            <circle cx="280" cy="200" r="180" fill="url(#nfGlow)" />
+
+                            <!-- Sun disc -->
+                            <circle cx="392" cy="152" r="42" fill="#8B5E3C" opacity="0.14" />
+                            <circle cx="392" cy="152" r="26" fill="#8B5E3C" opacity="0.28" />
+
+                            <!-- Winding path -->
+                            <path d="M280 520 C 244 470, 320 442, 300 402 C 280 362, 220 340, 244 296 C 262 262, 316 254, 306 216"
+                                stroke="url(#nfPath)" stroke-width="26" stroke-linecap="round" fill="none"
+                                opacity="0.85" />
+                            <path d="M280 520 C 244 470, 320 442, 300 402 C 280 362, 220 340, 244 296 C 262 262, 316 254, 306 216"
+                                stroke="#8B5E3C" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"
+                                fill="none" opacity="0.55" />
+
+                            <!-- Path end marker -->
+                            <g transform="translate(306 208)">
+                                <circle r="8" fill="#0A2947" />
+                                <circle r="3" fill="#F3E4C9" />
+                            </g>
+
+                            <!-- Small waypoint markers along the path -->
+                            <g fill="#0A2947" opacity="0.5">
+                                <circle cx="246" cy="300" r="4" />
+                                <circle cx="300" cy="404" r="4" />
+                                <circle cx="282" cy="500" r="4" />
+                            </g>
+
+                            <!-- Foreground grass hints -->
+                            <g stroke="#0A2947" stroke-opacity="0.35" stroke-width="1.4" stroke-linecap="round">
+                                <path d="M60 470 l6 -14 M70 470 l-4 -12 M90 486 l5 -12" />
+                                <path d="M470 460 l6 -14 M480 462 l-4 -11 M500 478 l5 -12" />
+                            </g>
+
+                            <!-- Typographic anchor -->
+                            <text x="60" y="70" font-family="Fraunces, Georgia, serif" font-size="24"
+                                font-weight="500" fill="#0A2947" opacity="0.55">wrong turn</text>
+                            <text x="60" y="96" font-family="Inter, sans-serif" font-size="11"
+                                letter-spacing="4" fill="#0A2947" opacity="0.45">NOT THE END OF THE ROAD</text>
+                        </svg>
+                    </figure>
+
+                    <aside class="not-found__badge nf-up">
+                        <p class="not-found__badge-label">A small reassurance</p>
+                        <p class="not-found__badge-text">
+                            Nothing was lost. Everything worth finding is two clicks away.
+                        </p>
+                    </aside>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            var root = document.documentElement;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* Go back button handler */
+            var goBackBtn = document.getElementById('goBackBtn');
+            if (goBackBtn) {
+                goBackBtn.addEventListener('click', function () {
+                    var fromContact = false;
+                    try {
+                        fromContact = (document.referrer && document.referrer.indexOf('contact.html') !== -1) ||
+                                      sessionStorage.getItem('stackly_contact_submitted') === 'true';
+                    } catch (err) {}
+
+                    if (fromContact) {
+                        if (window.history.length > 1) {
+                            window.history.back();
+                        } else {
+                            window.location.href = 'contact.html#conversation';
+                        }
+                    } else if (window.history.length > 1) {
+                        window.history.back();
+                    } else {
+                        window.location.href = '../index.html';
+                    }
+                });
+            }
+
+            /* Header scroll state */
+            var header = document.getElementById('siteHeader');
+            var lastKnown = -1;
+            function onScroll() {
+                var y = window.pageYOffset || document.documentElement.scrollTop;
+                var scrolled = y > 24;
+                if (scrolled !== lastKnown) {
+                    header.classList.toggle('is-scrolled', scrolled);
+                    lastKnown = scrolled;
+                }
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            /* Mobile menu */
+            var menu = document.getElementById('mobileMenu');
+            var toggle = document.getElementById('menuToggle');
+            var closeBtn = document.getElementById('menuClose');
+            var body = document.body;
+            var menuAnimating = false;
+
+            function openMenu() {
+                if (!menu || menuAnimating) return;
+                menuAnimating = true;
+                menu.classList.add('is-open');
+                toggle.setAttribute('aria-expanded', 'true');
+                body.classList.add('is-locked');
+
+                if (window.gsap && !reduceMotion) {
+                    gsap.fromTo(menu, { opacity: 0 },
+                        { opacity: 1, duration: 0.3, ease: 'power2.out', onComplete: function () { menuAnimating = false; } });
+                    gsap.fromTo(menu.querySelectorAll('.mobile-menu__link'),
+                        { opacity: 0, y: 22 },
+                        { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power3.out', delay: 0.06 });
+                    gsap.fromTo(menu.querySelector('.mobile-menu__aside'),
+                        { opacity: 0, y: 16 },
+                        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.18 });
+                } else {
+                    menuAnimating = false;
+                }
+                if (closeBtn) closeBtn.focus();
+            }
+
+            function closeMenu(restoreFocus) {
+                if (!menu || !menu.classList.contains('is-open')) return;
+                menu.classList.remove('is-open');
+                toggle.setAttribute('aria-expanded', 'false');
+                body.classList.remove('is-locked');
+                if (restoreFocus !== false && toggle) toggle.focus();
+            }
+
+            if (toggle) toggle.addEventListener('click', openMenu);
+            if (closeBtn) closeBtn.addEventListener('click', function () { closeMenu(true); });
+
+            if (menu) {
+                menu.addEventListener('click', function (e) {
+                    if (e.target.closest('a')) {
+                        body.classList.remove('is-locked');
+                        menu.classList.remove('is-open');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && menu && menu.classList.contains('is-open')) closeMenu(true);
+            });
+
+            /* GSAP: restrained directional entrance, no scroll triggers */
+            if (!window.gsap || reduceMotion) {
+                root.classList.remove('has-js');
+                return;
+            }
+
+            var EASE = 'power3.out';
+
+            gsap.to('.nf-left', {
+                x: 0, opacity: 1, duration: 0.85, ease: EASE, stagger: 0.1, delay: 0.1
+            });
+            gsap.to('.nf-up', {
+                y: 0, opacity: 1, duration: 0.85, ease: EASE, stagger: 0.09, delay: 0.22
+            });
+            gsap.to('.nf-right', {
+                x: 0, opacity: 1, duration: 1.0, ease: EASE, delay: 0.3
+            });
+
+        })();
+    </script>
+
+</body>
+
+</html>
