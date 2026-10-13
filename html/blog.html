@@ -46,14 +46,7 @@
                     }, 550);
                 }
             }
-            if (document.readyState === 'complete') {
-                setTimeout(removePreloader, 400);
-            } else {
-                window.addEventListener('load', function () {
-                    setTimeout(removePreloader, 400);
-                });
-                setTimeout(removePreloader, 2200);
-            }
+            setTimeout(removePreloader, 1500);
         })();
     </script>
 
