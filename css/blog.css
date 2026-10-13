@@ -97,6 +97,18 @@
     margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
 }
 
+.blog-hero .btn--secondary {
+    border-color: rgba(243, 228, 201, 0.38);
+    color: var(--on-dark);
+    background-color: rgba(243, 228, 201, 0.05);
+}
+
+.blog-hero .btn--secondary:hover {
+    border-color: var(--brand-parchment);
+    color: var(--brand-blue);
+    background-color: var(--brand-parchment);
+}
+
 .blog-hero__meta {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
